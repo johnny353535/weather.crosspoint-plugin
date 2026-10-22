@@ -1,34 +1,360 @@
-const width = 480;
-const height = 800;
-const rowBytes = width / 8;
+import { Resvg, initWasm } from '@resvg/resvg-wasm';
+import resvgWasm from '@resvg/resvg-wasm/index_bg.wasm';
+import cloud from 'lucide-static/icons/cloud.svg';
+import cloudDrizzle from 'lucide-static/icons/cloud-drizzle.svg';
+import cloudFog from 'lucide-static/icons/cloud-fog.svg';
+import cloudLightning from 'lucide-static/icons/cloud-lightning.svg';
+import cloudMoon from 'lucide-static/icons/cloud-moon.svg';
+import cloudMoonRain from 'lucide-static/icons/cloud-moon-rain.svg';
+import cloudRain from 'lucide-static/icons/cloud-rain.svg';
+import cloudSnow from 'lucide-static/icons/cloud-snow.svg';
+import cloudSun from 'lucide-static/icons/cloud-sun.svg';
+import cloudSunRain from 'lucide-static/icons/cloud-sun-rain.svg';
+import interFont from './InterVariable.ttf';
+import navigation from 'lucide-static/icons/navigation.svg';
+import moon from 'lucide-static/icons/moon.svg';
+import sun from 'lucide-static/icons/sun.svg';
+import sunrise from 'lucide-static/icons/sunrise.svg';
+import svgTemplate from './weather.svg';
+import sunset from 'lucide-static/icons/sunset.svg';
+import umbrella from 'lucide-static/icons/umbrella.svg';
 
-function createBmp(): ArrayBuffer {
-	const pixels = new Uint8Array(rowBytes * height).fill(0xff);
+const WIDTH = 480;
+const HEIGHT = 800;
+const ROW_BYTES = WIDTH / 8;
+const BERLIN_TIMEZONE = 'Europe/Berlin';
+const WEATHER_URL = new URL('https://api.open-meteo.com/v1/forecast');
+WEATHER_URL.searchParams.set('latitude', '52.52');
+WEATHER_URL.searchParams.set('longitude', '13.405');
+WEATHER_URL.searchParams.set('current', 'temperature_2m,weather_code,is_day');
+WEATHER_URL.searchParams.set('hourly', 'temperature_2m,precipitation_probability,weather_code,is_day');
+WEATHER_URL.searchParams.set('daily', 'weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset');
+WEATHER_URL.searchParams.set('timezone', BERLIN_TIMEZONE);
+WEATHER_URL.searchParams.set('forecast_days', '4');
 
-	const pixel = (x: number, y: number, black = true) => {
-		const index = (height - 1 - y) * rowBytes + (x >> 3);
-		const mask = 0x80 >> (x & 7);
-		if (black) pixels[index] &= ~mask;
-		else pixels[index] |= mask;
+type RecordValue = Record<string, unknown>;
+
+interface WeatherData {
+	current: {
+		temperature: number;
+		weatherCode: number;
+		isDay: boolean;
+		time: string;
 	};
-
-	const rect = (x0: number, y0: number, x1: number, y1: number) => {
-		for (let y = y0; y <= y1; y++) {
-			for (let x = x0; x <= x1; x++) pixel(x, y);
-		}
+	hourly: {
+		time: string[];
+		temperature: number[];
+		precipitationProbability: number[];
+		weatherCode: number[];
+		isDay: boolean[];
 	};
+	daily: {
+		time: string[];
+		weatherCode: number[];
+		maximumTemperature: number[];
+		minimumTemperature: number[];
+		sunrise: string[];
+		sunset: string[];
+	};
+}
 
-	rect(20, 20, 459, 779);
-	rect(40, 100, 440, 108);
-	rect(40, 150, 250, 360);
-	rect(280, 150, 440, 360);
-	rect(40, 410, 440, 418);
-	rect(40, 470, 380, 478);
-	rect(40, 530, 320, 538);
-	rect(40, 590, 400, 598);
+let wasmReady: Promise<void> | undefined;
 
-	const buffer = new ArrayBuffer(62 + pixels.length);
+function initializeWasm(): Promise<void> {
+	wasmReady ??= initWasm(resvgWasm);
+	return wasmReady;
+}
+
+function isRecord(value: unknown): value is RecordValue {
+	return typeof value === 'object' && value !== null;
+}
+
+function getRecord(value: unknown, name: string): RecordValue {
+	if (!isRecord(value)) throw new Error(`Open-Meteo response is missing ${name}`);
+	return value;
+}
+
+function getNumber(value: unknown, name: string): number {
+	if (typeof value !== 'number' || !Number.isFinite(value)) {
+		throw new Error(`Open-Meteo response has invalid ${name}`);
+	}
+	return value;
+}
+
+function getNumberArray(value: unknown, name: string): number[] {
+	if (!Array.isArray(value)) throw new Error(`Open-Meteo response is missing ${name}`);
+	return value.map((entry, index) => getNumber(entry, `${name}[${index}]`));
+}
+
+function getBoolean(value: unknown, name: string): boolean {
+	return getNumber(value, name) === 1;
+}
+
+function getBooleanArray(value: unknown, name: string): boolean[] {
+	return getNumberArray(value, name).map((entry) => entry === 1);
+}
+
+function getStringArray(value: unknown, name: string): string[] {
+	if (!Array.isArray(value) || value.some((entry) => typeof entry !== 'string')) {
+		throw new Error(`Open-Meteo response has invalid ${name}`);
+	}
+	return value;
+}
+
+function parseWeatherResponse(value: unknown): WeatherData {
+	const response = getRecord(value, 'root');
+	const current = getRecord(response.current, 'current');
+	const hourly = getRecord(response.hourly, 'hourly');
+	const daily = getRecord(response.daily, 'daily');
+
+	return {
+		current: {
+			temperature: getNumber(current.temperature_2m, 'current.temperature_2m'),
+			weatherCode: getNumber(current.weather_code, 'current.weather_code'),
+			isDay: getBoolean(current.is_day, 'current.is_day'),
+			time: typeof current.time === 'string' ? current.time : '',
+		},
+		hourly: {
+			time: getStringArray(hourly.time, 'hourly.time'),
+			temperature: getNumberArray(hourly.temperature_2m, 'hourly.temperature_2m'),
+			precipitationProbability: getNumberArray(hourly.precipitation_probability, 'hourly.precipitation_probability'),
+			weatherCode: getNumberArray(hourly.weather_code, 'hourly.weather_code'),
+			isDay: getBooleanArray(hourly.is_day, 'hourly.is_day'),
+		},
+		daily: {
+			time: getStringArray(daily.time, 'daily.time'),
+			weatherCode: getNumberArray(daily.weather_code, 'daily.weather_code'),
+			maximumTemperature: getNumberArray(daily.temperature_2m_max, 'daily.temperature_2m_max'),
+			minimumTemperature: getNumberArray(daily.temperature_2m_min, 'daily.temperature_2m_min'),
+			sunrise: getStringArray(daily.sunrise, 'daily.sunrise'),
+			sunset: getStringArray(daily.sunset, 'daily.sunset'),
+		},
+	};
+}
+
+async function fetchWeather(): Promise<WeatherData> {
+	const response = await fetch(WEATHER_URL, {
+		headers: { Accept: 'application/json' },
+	});
+	if (!response.ok) throw new Error(`Open-Meteo returned HTTP ${response.status}`);
+	return parseWeatherResponse(await response.json());
+}
+
+function formatTemperature(value: number): string {
+	return `${Math.round(value)}°`;
+}
+
+function formatHour(value: string): string {
+	return value.slice(11, 16);
+}
+
+function formatDate(value: string): string {
+	return new Intl.DateTimeFormat('en-US', {
+		day: 'numeric',
+		month: 'long',
+		timeZone: 'UTC',
+		weekday: 'long',
+	}).format(new Date(`${value}T12:00:00Z`));
+}
+
+function formatWeekday(value: string): string {
+	return new Intl.DateTimeFormat('en-US', {
+		timeZone: 'UTC',
+		weekday: 'short',
+	})
+		.format(new Date(`${value}T12:00:00Z`))
+		.toUpperCase();
+}
+
+function findCurrentHourIndex(currentTime: string, hourlyTimes: string[]): number {
+	const currentHour = `${currentTime.slice(0, 13)}:00`;
+	const exactIndex = hourlyTimes.indexOf(currentHour);
+	return exactIndex >= 0 ? exactIndex : 0;
+}
+
+function escapeXml(value: string): string {
+	return value.replace(/[&<>'"]/g, (character) => {
+		const entities: Record<string, string> = {
+			'&': '&amp;',
+			'<': '&lt;',
+			'>': '&gt;',
+			"'": '&apos;',
+			'"': '&quot;',
+		};
+		return entities[character];
+	});
+}
+
+function replaceTextNode(node: string, values: string[]): string {
+	let valueIndex = 0;
+	return node.replace(/(<tspan\b[^>]*>)([\s\S]*?)(<\/tspan>)/g, (_match, opening: string, _value: string, closing: string) => {
+		const value = values[valueIndex++];
+		return `${opening}${escapeXml(value ?? '')}${closing}`;
+	});
+}
+
+const staticIconPathStarts = [
+	'<path d="M424.667 306',
+	'<path d="M320 72',
+	'<path d="M322 344',
+	'<path d="M322 440',
+	'<path d="M322 536',
+	'<path d="M322 632',
+	'<path d="M322 728',
+	'<path d="M141 98',
+	'<path d="M152 230',
+	'<path d="M144 362',
+	'<path d="M137 567',
+	'<path d="M104.333 567',
+	'<path d="M71.6667 567',
+];
+
+function removeStaticIcons(svg: string): string {
+	let removedCount = 0;
+	const cleanedSvg = svg
+		.split('\n')
+		.filter((line) => {
+			const isStaticIcon = staticIconPathStarts.some((pathStart) => line.startsWith(pathStart));
+			if (isStaticIcon) removedCount++;
+			return !isStaticIcon;
+		})
+		.join('\n');
+
+	if (removedCount !== staticIconPathStarts.length) {
+		throw new Error('weather.svg static icon layout does not match the template');
+	}
+	return cleanedSvg;
+}
+
+function selectWeatherIcon(weatherCode: number, isDay: boolean): string {
+	if (weatherCode === 0) return isDay ? sun : moon;
+	if (weatherCode === 1 || weatherCode === 2) return isDay ? cloudSun : cloudMoon;
+	if (weatherCode === 3) return cloud;
+	if (weatherCode === 45 || weatherCode === 48) return cloudFog;
+	if (weatherCode >= 51 && weatherCode <= 57) return cloudDrizzle;
+	if (weatherCode >= 61 && weatherCode <= 67) return cloudRain;
+	if (weatherCode >= 71 && weatherCode <= 77) return cloudSnow;
+	if (weatherCode >= 80 && weatherCode <= 82) {
+		return isDay ? cloudSunRain : cloudMoonRain;
+	}
+	if (weatherCode >= 85 && weatherCode <= 86) return cloudSnow;
+	if (weatherCode >= 95 && weatherCode <= 99) return cloudLightning;
+	return cloud;
+}
+
+function placeWeatherIcon(icon: string, x: number, y: number, size: number): string {
+	return icon
+		.replace(/<!--[^>]*-->/g, '')
+		.replace('<svg', `<svg x="${x}" y="${y}" transform="rotate(45 ${x + size / 2} ${y + size / 2})"`)
+		.replace('width="24"', `width="${size}"`)
+		.replace('height="24"', `height="${size}"`)
+		.replace(/stroke="currentColor"/g, 'stroke="black"')
+		.replace(/\n/g, '');
+}
+
+function insertWeatherIcons(
+	svg: string,
+	weather: WeatherData,
+	hourly: Array<{ weatherCode: number; isDay: boolean }>,
+	daily: Array<{ weatherCode: number; isDay: boolean }>,
+): string {
+	const hourlyPositions = [
+		[282, 324],
+		[282, 420],
+		[282, 516],
+		[282, 612],
+		[282, 708],
+	];
+	const dailyPositions = [
+		[120, 558],
+		[87, 558],
+		[55, 558],
+	];
+	const icons = [
+		placeWeatherIcon(selectWeatherIcon(weather.current.weatherCode, weather.current.isDay), 280, 52, 40),
+		...hourly.map((forecast, index) =>
+			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), hourlyPositions[index][0], hourlyPositions[index][1], 40),
+		),
+		...daily.map((forecast, index) =>
+			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), dailyPositions[index][0], dailyPositions[index][1], 18),
+		),
+		placeWeatherIcon(navigation, 416, 302, 24),
+		placeWeatherIcon(umbrella, 132, 88, 24),
+		placeWeatherIcon(sunrise, 132, 220, 24),
+		placeWeatherIcon(sunset, 132, 352, 24),
+	].join('');
+
+	if (hourly.length !== hourlyPositions.length || daily.length !== dailyPositions.length) {
+		throw new Error('weather icon positions do not match the data template');
+	}
+	return svg.replace('</svg>', `${icons}</svg>`);
+}
+
+function renderSvg(weather: WeatherData): string {
+	const currentHourIndex = findCurrentHourIndex(weather.current.time, weather.hourly.time);
+	const hourly = Array.from({ length: 5 }, (_, index) => {
+		const hourIndex = Math.min(currentHourIndex + index + 1, weather.hourly.time.length - 1);
+		return {
+			time: formatHour(weather.hourly.time[hourIndex]),
+			temperature: formatTemperature(weather.hourly.temperature[hourIndex]),
+			weatherCode: weather.hourly.weatherCode[hourIndex],
+			isDay: weather.hourly.isDay[hourIndex],
+		};
+	});
+	const daily = [1, 2, 3].map((dayIndex) => ({
+		day: formatWeekday(weather.daily.time[dayIndex]),
+		maximum: Math.round(weather.daily.maximumTemperature[dayIndex]).toString(),
+		minimum: Math.round(weather.daily.minimumTemperature[dayIndex]).toString(),
+		weatherCode: weather.daily.weatherCode[dayIndex],
+		isDay: true,
+	}));
+
+	const replacements: Array<string[] | undefined> = [
+		[`${formatDate(weather.daily.time[0])}  •  Berlin`],
+		[formatHour(weather.current.time)],
+		['NOW'],
+		[formatTemperature(weather.current.temperature)],
+		[`H: ${formatTemperature(weather.daily.maximumTemperature[0])} L: ${formatTemperature(weather.daily.minimumTemperature[0])}`],
+	];
+
+	for (const forecast of hourly) {
+		replacements.push([forecast.time], [forecast.temperature]);
+	}
+
+	replacements.push(
+		[`${Math.round(weather.hourly.precipitationProbability[currentHourIndex])}%`],
+		['RAIN'],
+		[formatHour(weather.daily.sunrise[0])],
+		['SUNRISE'],
+		[formatHour(weather.daily.sunset[0])],
+		['SUNSET'],
+		['FORECAST'],
+	);
+
+	for (const forecast of daily) {
+		replacements.push([forecast.day], [forecast.maximum, ` / ${forecast.minimum}`], undefined);
+	}
+
+	let textNodeIndex = 0;
+	const renderedSvg = removeStaticIcons(svgTemplate).replace(/<text\b[\s\S]*?<\/text>/g, (node) => {
+		const replacement = replacements[textNodeIndex++];
+		return replacement ? replaceTextNode(node, replacement) : node;
+	});
+	if (textNodeIndex !== replacements.length) {
+		throw new Error('weather.svg text layout does not match the data template');
+	}
+	return insertWeatherIcons(renderedSvg, weather, hourly, daily);
+}
+
+function createBmp(pixels: Uint8Array, width: number, height: number): ArrayBuffer {
+	if (width !== WIDTH || height !== HEIGHT || pixels.length !== width * height * 4) {
+		throw new Error(`Unexpected rendered image size: ${width}x${height}`);
+	}
+
+	const pixelDataSize = ROW_BYTES * height;
+	const buffer = new ArrayBuffer(62 + pixelDataSize);
 	const view = new DataView(buffer);
+	const output = new Uint8Array(buffer, 62);
 
 	view.setUint8(0, 0x42);
 	view.setUint8(1, 0x4d);
@@ -41,14 +367,51 @@ function createBmp(): ArrayBuffer {
 	view.setUint16(28, 1, true);
 	view.setUint32(46, 2, true);
 
-	// Palette: black, white
 	view.setUint8(54, 0);
+	view.setUint8(55, 0);
+	view.setUint8(56, 0);
+	view.setUint8(57, 0);
 	view.setUint8(58, 255);
 	view.setUint8(59, 255);
 	view.setUint8(60, 255);
+	view.setUint8(61, 0);
+	output.fill(0xff);
 
-	new Uint8Array(buffer, 62).set(pixels);
+	for (let y = 0; y < height; y++) {
+		const outputRow = (height - 1 - y) * ROW_BYTES;
+		for (let x = 0; x < width; x++) {
+			const pixelIndex = (y * width + x) * 4;
+			const alpha = pixels[pixelIndex + 3] / 255;
+			const red = pixels[pixelIndex] * alpha + 255 * (1 - alpha);
+			const green = pixels[pixelIndex + 1] * alpha + 255 * (1 - alpha);
+			const blue = pixels[pixelIndex + 2] * alpha + 255 * (1 - alpha);
+			const luminance = 0.299 * red + 0.587 * green + 0.114 * blue;
+			if (luminance < 200) output[outputRow + (x >> 3)] &= ~(0x80 >> (x & 7));
+		}
+	}
+
 	return buffer;
+}
+
+async function createWeatherBmp(weather: WeatherData): Promise<ArrayBuffer> {
+	await initializeWasm();
+	const renderer = new Resvg(renderSvg(weather), {
+		background: '#ffffff',
+		fitTo: { mode: 'original' },
+		font: {
+			defaultFontFamily: 'Inter',
+			fontBuffers: [new Uint8Array(interFont)],
+			loadSystemFonts: false,
+			sansSerifFamily: 'Inter',
+		},
+	});
+	const image = renderer.render();
+	try {
+		return createBmp(image.pixels, image.width, image.height);
+	} finally {
+		image.free();
+		renderer.free();
+	}
 }
 
 export default {
@@ -59,11 +422,18 @@ export default {
 			return new Response('Not found', { status: 404 });
 		}
 
-		return new Response(createBmp(), {
-			headers: {
-				'Content-Type': 'image/bmp',
-				'Cache-Control': 'no-store',
-			},
-		});
+		try {
+			const weather = await fetchWeather();
+			const bmp = await createWeatherBmp(weather);
+			return new Response(bmp, {
+				headers: {
+					'Cache-Control': 'no-store',
+					'Content-Type': 'image/bmp',
+				},
+			});
+		} catch (error) {
+			console.error('Weather image generation failed', error);
+			return new Response('Weather image generation failed', { status: 502 });
+		}
 	},
 } satisfies ExportedHandler<Env>;

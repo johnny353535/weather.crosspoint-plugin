@@ -1,0 +1,99 @@
+<svg width="480" height="800" viewBox="0 0 480 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="480" height="800" fill="#1E1E1E"/>
+<rect width="800" height="480" transform="matrix(0 1 -1 0 480 0)" fill="white"/>
+<text transform="matrix(0 1 -1 0 432 48)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="16" font-weight="600" letter-spacing="0em"><tspan x="0" y="13.8182">Wednesday, August 23  &#x2022;  Berlin</tspan></text>
+<path d="M424.667 306L430.667 318.667L418 312.667L423.333 311.333L424.667 306Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<text transform="matrix(0 1 -1 0 432 707)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="16" font-weight="600" letter-spacing="0em"><tspan x="0" y="13.8182">13:XX</tspan></text>
+<text transform="matrix(0 1 -1 0 356 48)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="16" font-weight="bold" letter-spacing="0.02em"><tspan x="0" y="13.8182">NOW</tspan></text>
+<path d="M320 72H316M314.14 57.86L311.32 60.68M300 88V92M314.14 86.14L311.32 83.32M298.7 79.894C300.191 80.1401 301.721 79.9589 303.114 79.3714C304.506 78.7838 305.703 77.8139 306.567 76.574C307.431 75.3341 307.926 73.8749 307.995 72.3652C308.064 70.8556 307.703 69.3574 306.956 68.044M280 74V62C280 60.1079 280.538 58.2548 281.549 56.6558C282.561 55.0569 284.005 53.7777 285.715 52.9668C287.424 52.156 289.328 51.8468 291.207 52.0751C293.085 52.3034 294.86 53.0599 296.325 54.2567C297.791 55.4535 298.887 57.0415 299.486 58.8362C300.085 60.631 300.162 62.5588 299.709 64.3959C299.256 66.2329 298.292 67.9038 296.927 69.2144C295.562 70.525 293.854 71.4216 292 71.8V74C292 75.5913 291.368 77.1174 290.243 78.2426C289.117 79.3679 287.591 80 286 80C284.409 80 282.883 79.3679 281.757 78.2426C280.632 77.1174 280 75.5913 280 74Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<text transform="matrix(0 1 -1 0 332 104)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="64" font-weight="300" letter-spacing="0em"><tspan x="0" y="55.2727">23&#xb0;</tspan></text>
+<text transform="matrix(0 1 -1 0 260 48)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="500" letter-spacing="0em"><tspan x="0" y="17.2727">H: 24&#xb0; L: 19&#xb0;</tspan></text>
+<rect x="355.5" y="266" width="1" height="115" transform="rotate(90 355.5 266)" stroke="black"/>
+<g clip-path="url(#clip0_0_1)">
+<text transform="matrix(0 1 -1 0 354 321.5)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="16" font-weight="600" letter-spacing="0.01em"><tspan x="0" y="13.8182">14:00</tspan></text>
+<path d="M322 344H318M316.14 329.86L313.32 332.68M302 360V364M316.14 358.14L313.32 355.32M300.7 351.894C302.191 352.14 303.721 351.959 305.114 351.371C306.506 350.784 307.703 349.814 308.567 348.574C309.431 347.334 309.926 345.875 309.995 344.365C310.064 342.856 309.703 341.357 308.956 340.044M282 346V334C282 332.108 282.538 330.255 283.549 328.656C284.561 327.057 286.005 325.778 287.715 324.967C289.424 324.156 291.328 323.847 293.207 324.075C295.085 324.303 296.86 325.06 298.325 326.257C299.791 327.454 300.887 329.042 301.486 330.836C302.085 332.631 302.162 334.559 301.709 336.396C301.256 338.233 300.292 339.904 298.927 341.214C297.562 342.525 295.854 343.422 294 343.8V346C294 347.591 293.368 349.117 292.243 350.243C291.117 351.368 289.591 352 288 352C286.409 352 284.883 351.368 283.757 350.243C282.632 349.117 282 347.591 282 346Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<text transform="matrix(0 1 -1 0 266 323.5)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="0" y="20.7273">22&#xb0;</tspan></text>
+</g>
+<rect x="354" y="320" width="48" height="112" transform="rotate(90 354 320)"/>
+<g clip-path="url(#clip1_0_1)">
+<text transform="matrix(0 1 -1 0 354 417.5)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="16" font-weight="600" letter-spacing="0.01em"><tspan x="0" y="13.8182">15:00</tspan></text>
+<path d="M322 440H318M316.14 425.86L313.32 428.68M302 456V460M316.14 454.14L313.32 451.32M300.7 447.894C302.191 448.14 303.721 447.959 305.114 447.371C306.506 446.784 307.703 445.814 308.567 444.574C309.431 443.334 309.926 441.875 309.995 440.365C310.064 438.856 309.703 437.357 308.956 436.044M282 442V430C282 428.108 282.538 426.255 283.549 424.656C284.561 423.057 286.005 421.778 287.715 420.967C289.424 420.156 291.328 419.847 293.207 420.075C295.085 420.303 296.86 421.06 298.325 422.257C299.791 423.454 300.887 425.041 301.486 426.836C302.085 428.631 302.162 430.559 301.709 432.396C301.256 434.233 300.292 435.904 298.927 437.214C297.562 438.525 295.854 439.422 294 439.8V442C294 443.591 293.368 445.117 292.243 446.243C291.117 447.368 289.591 448 288 448C286.409 448 284.883 447.368 283.757 446.243C282.632 445.117 282 443.591 282 442Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<text transform="matrix(0 1 -1 0 266 419.5)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="0" y="20.7273">22&#xb0;</tspan></text>
+</g>
+<rect x="354" y="416" width="48" height="112" transform="rotate(90 354 416)"/>
+<g clip-path="url(#clip2_0_1)">
+<text transform="matrix(0 1 -1 0 354 513.5)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="16" font-weight="600" letter-spacing="0.01em"><tspan x="0" y="13.8182">16:00</tspan></text>
+<path d="M322 536H318M316.14 521.86L313.32 524.68M302 552V556M316.14 550.14L313.32 547.32M300.7 543.894C302.191 544.14 303.721 543.959 305.114 543.371C306.506 542.784 307.703 541.814 308.567 540.574C309.431 539.334 309.926 537.875 309.995 536.365C310.064 534.856 309.703 533.357 308.956 532.044M286 518C287.2 517.101 288.586 516.483 290.057 516.193C291.528 515.902 293.045 515.946 294.496 516.32C295.948 516.695 297.297 517.392 298.443 518.358C299.589 519.324 300.503 520.536 301.117 521.903C301.732 523.271 302.031 524.759 301.993 526.258C301.955 527.756 301.58 529.227 300.897 530.561C300.213 531.896 299.239 533.059 298.045 533.966C296.851 534.873 295.469 535.5 294 535.8V538C294.002 539.217 293.634 540.406 292.944 541.408C292.255 542.411 291.276 543.18 290.14 543.614C289.003 544.048 287.761 544.126 286.578 543.838C285.396 543.55 284.329 542.909 283.52 542M286 534H282M288 526H284" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<text transform="matrix(0 1 -1 0 266 515.5)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="0" y="20.7273">22&#xb0;</tspan></text>
+</g>
+<rect x="354" y="512" width="48" height="112" transform="rotate(90 354 512)"/>
+<g clip-path="url(#clip3_0_1)">
+<text transform="matrix(0 1 -1 0 354 610)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="16" font-weight="600" letter-spacing="0.01em"><tspan x="0" y="13.8182">17:00</tspan></text>
+<path d="M322 632H318M286 632H282M316.14 617.86L313.32 620.68M290.68 643.32L287.86 646.14M302 612V616M302 648V652M290.68 620.68L287.86 617.86M316.14 646.14L313.32 643.32M302 640C297.582 640 294 636.418 294 632C294 627.582 297.582 624 302 624C306.418 624 310 627.582 310 632C310 636.418 306.418 640 302 640Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<text transform="matrix(0 1 -1 0 266 611.5)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="0" y="20.7273">22&#xb0;</tspan></text>
+</g>
+<rect x="354" y="608" width="48" height="112" transform="rotate(90 354 608)"/>
+<g clip-path="url(#clip4_0_1)">
+<text transform="matrix(0 1 -1 0 354 705.5)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="16" font-weight="600" letter-spacing="0.01em"><tspan x="0" y="13.8182">18:00</tspan></text>
+<path d="M322 728H318M286 728H282M316.14 713.86L313.32 716.68M290.68 739.32L287.86 742.14M302 708V712M302 744V748M290.68 716.68L287.86 713.86M316.14 742.14L313.32 739.32M302 736C297.582 736 294 732.418 294 728C294 723.582 297.582 720 302 720C306.418 720 310 723.582 310 728C310 732.418 306.418 736 302 736Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<text transform="matrix(0 1 -1 0 266 707.5)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="0" y="20.7273">22&#xb0;</tspan></text>
+</g>
+<rect x="354" y="704" width="48" height="112" transform="rotate(90 354 704)"/>
+<g clip-path="url(#clip5_0_1)">
+<path d="M141 98H134C133.47 98 132.961 98.2107 132.586 98.5858C132.211 98.9609 132 99.4696 132 100C132 100.53 132.211 101.039 132.586 101.414C132.961 101.789 133.47 102 134 102M152 98H150M141 106.992C140.999 107.147 141.034 107.301 141.102 107.441C141.171 107.58 141.271 107.702 141.394 107.796C141.518 107.89 141.662 107.954 141.814 107.983C141.967 108.012 142.125 108.005 142.274 107.962C144.485 107.395 146.445 106.108 147.844 104.305C149.243 102.501 150.003 100.283 150.003 98.0005C150.003 95.7178 149.243 93.5 147.844 91.6964C146.445 89.8929 144.485 88.6062 142.274 88.039C142.125 87.9966 141.969 87.9893 141.817 88.0177C141.665 88.046 141.521 88.1093 141.398 88.2024C141.274 88.2955 141.174 88.416 141.105 88.5544C141.036 88.6928 141 88.8453 141 89V106.992Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<text transform="matrix(0 1 -1 0 118 72.5)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="0" y="20.7273">20%</tspan></text>
+<text transform="matrix(0 1 -1 0 82 83)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="12" font-weight="bold" letter-spacing="0.01em"><tspan x="0" y="10.3636">RAIN</tspan></text>
+</g>
+<rect x="176" y="48" width="100" height="128" rx="12" transform="rotate(90 176 48)" stroke="black" stroke-miterlimit="16"/>
+<g clip-path="url(#clip6_0_1)">
+<path d="M152 230H144M148 234L152 230L148 226M143.07 222.93L141.66 224.34M136 220V222M136 238V240M143.07 237.07L141.66 235.66M132 240V220M136 234C137.061 234 138.078 233.579 138.828 232.828C139.579 232.078 140 231.061 140 230C140 228.939 139.579 227.922 138.828 227.172C138.078 226.421 137.061 226 136 226" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<text transform="matrix(0 1 -1 0 118 195.5)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="0" y="20.7273">08:34</tspan></text>
+<text transform="matrix(0 1 -1 0 82 204)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="12" font-weight="bold" letter-spacing="0em"><tspan x="0" y="10.3636">SUNRISE</tspan></text>
+</g>
+<rect x="176" y="180" width="100" height="128" rx="12" transform="rotate(90 176 180)" stroke="black" stroke-miterlimit="16"/>
+<g clip-path="url(#clip7_0_1)">
+<path d="M144 362H152M148 358L144 362L148 366M143.07 354.93L141.66 356.34M136 352V354M136 370V372M143.07 369.07L141.66 367.66M132 372V352M136 366C137.061 366 138.078 365.579 138.828 364.828C139.579 364.078 140 363.061 140 362C140 360.939 139.579 359.922 138.828 359.172C138.078 358.421 137.061 358 136 358" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<text transform="matrix(0 1 -1 0 118 330)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="500" letter-spacing="0em"><tspan x="0" y="20.7273">21:03</tspan></text>
+<text transform="matrix(0 1 -1 0 82 337)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="12" font-weight="bold" letter-spacing="0.01em"><tspan x="0" y="10.3636">SUNSET</tspan></text>
+</g>
+<rect x="176" y="312" width="100" height="128" rx="12" transform="rotate(90 176 312)" stroke="black" stroke-miterlimit="16"/>
+<text transform="matrix(0 1 -1 0 171 494.667)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="16" font-weight="bold" letter-spacing="0.02em"><tspan x="0" y="13.8182">FORECAST</tspan></text>
+<text transform="matrix(0 1 -1 0 136.667 494.667)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="16" font-weight="600" letter-spacing="0.01em"><tspan x="0" y="13.8182">THU</tspan></text>
+<path d="M137 567H135.333M134.558 561.108L133.383 562.283M128.667 573.666V575.333M134.558 572.891L133.383 571.716M128.125 570.289C128.746 570.391 129.384 570.316 129.964 570.071C130.544 569.826 131.043 569.422 131.403 568.905C131.763 568.389 131.969 567.781 131.998 567.152C132.026 566.523 131.876 565.898 131.565 565.351M120.333 567.833V562.833C120.333 562.045 120.557 561.272 120.979 560.606C121.4 559.94 122.002 559.407 122.714 559.069C123.427 558.731 124.22 558.602 125.003 558.698C125.785 558.793 126.525 559.108 127.136 559.607C127.746 560.105 128.203 560.767 128.452 561.515C128.702 562.262 128.734 563.066 128.546 563.831C128.357 564.597 127.955 565.293 127.386 565.839C126.818 566.385 126.106 566.759 125.333 566.916V567.833C125.333 568.496 125.07 569.132 124.601 569.601C124.132 570.069 123.496 570.333 122.833 570.333C122.17 570.333 121.534 570.069 121.066 569.601C120.597 569.132 120.333 568.496 120.333 567.833Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<text transform="matrix(0 1 -1 0 138.667 585.333)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="500" letter-spacing="0em"><tspan x="0" y="17.2727">20</tspan><tspan x="34.2969" y="17.2727"> / 10</tspan></text>
+<text transform="matrix(0 1 -1 0 138.667 585.333)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="500" letter-spacing="0em"><tspan x="25.1758" y="17.2727">&#xb0;</tspan><tspan x="74.5898" y="17.2727">&#xb0;</tspan></text>
+<text transform="matrix(0 1 -1 0 104 494.667)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="16" font-weight="600" letter-spacing="0.01em"><tspan x="0" y="13.8182">FRI</tspan></text>
+<path d="M104.333 567H102.667M101.892 561.108L100.717 562.283M95.9999 573.666V575.333M101.892 572.891L100.717 571.716M95.4583 570.289C96.0795 570.391 96.7171 570.316 97.2972 570.071C97.8773 569.826 98.3762 569.422 98.7362 568.905C99.0961 568.389 99.3024 567.781 99.3311 567.152C99.3597 566.523 99.2097 565.898 98.8983 565.351M87.6666 567.833V562.833C87.6667 562.045 87.8906 561.272 88.312 560.606C88.7335 559.94 89.3353 559.407 90.0476 559.069C90.7599 558.731 91.5535 558.602 92.3361 558.698C93.1187 558.793 93.8582 559.108 94.4688 559.607C95.0794 560.105 95.536 560.767 95.7856 561.515C96.0352 562.262 96.0675 563.066 95.8788 563.831C95.6901 564.597 95.2881 565.293 94.7195 565.839C94.1509 566.385 93.439 566.759 92.6666 566.916V567.833C92.6666 568.496 92.4032 569.132 91.9344 569.601C91.4655 570.069 90.8296 570.333 90.1666 570.333C89.5035 570.333 88.8677 570.069 88.3988 569.601C87.93 569.132 87.6666 568.496 87.6666 567.833Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<text transform="matrix(0 1 -1 0 106 585.333)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="500" letter-spacing="0em"><tspan x="0" y="17.2727">22</tspan><tspan x="33.6523" y="17.2727"> / 8</tspan></text>
+<text transform="matrix(0 1 -1 0 106 585.333)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="500" letter-spacing="0em"><tspan x="24.5312" y="17.2727">&#xb0;</tspan><tspan x="64.2188" y="17.2727">&#xb0;</tspan></text>
+<text transform="matrix(0 1 -1 0 71.3335 494.667)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="16" font-weight="600" letter-spacing="0.01em"><tspan x="0" y="13.8182">SAT</tspan></text>
+<path d="M71.6667 567H70.0001M69.2251 561.108L68.0501 562.283M63.3334 573.666V575.333M69.2251 572.891L68.0501 571.716M62.7917 570.289C63.413 570.391 64.0506 570.316 64.6307 570.071C65.2108 569.826 65.7097 569.422 66.0697 568.905C66.4296 568.389 66.6359 567.781 66.6646 567.152C66.6932 566.523 66.5432 565.898 66.2317 565.351M55.0001 567.833V562.833C55.0002 562.045 55.2241 561.272 55.6455 560.606C56.067 559.94 56.6688 559.407 57.3811 559.069C58.0934 558.731 58.887 558.602 59.6696 558.698C60.4521 558.793 61.1917 559.108 61.8023 559.607C62.4129 560.105 62.8695 560.767 63.1191 561.515C63.3687 562.262 63.401 563.066 63.2123 563.831C63.0235 564.597 62.6215 565.293 62.053 565.839C61.4844 566.385 60.7725 566.759 60.0001 566.916V567.833C60.0001 568.496 59.7367 569.132 59.2678 569.601C58.799 570.069 58.1631 570.333 57.5001 570.333C56.837 570.333 56.2012 570.069 55.7323 569.601C55.2635 569.132 55.0001 568.496 55.0001 567.833Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<text transform="matrix(0 1 -1 0 73.3335 585.333)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="500" letter-spacing="0em"><tspan x="0" y="17.2727">19</tspan><tspan x="31.2891" y="17.2727"> / 12</tspan></text>
+<text transform="matrix(0 1 -1 0 73.3335 585.333)" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="500" letter-spacing="0em"><tspan x="22.168" y="17.2727">&#xb0;</tspan><tspan x="70.9375" y="17.2727">&#xb0;</tspan></text>
+<defs>
+<clipPath id="clip0_0_1">
+<rect x="354" y="320" width="48" height="112" rx="12" transform="rotate(90 354 320)" fill="white"/>
+</clipPath>
+<clipPath id="clip1_0_1">
+<rect x="354" y="416" width="48" height="112" rx="12" transform="rotate(90 354 416)" fill="white"/>
+</clipPath>
+<clipPath id="clip2_0_1">
+<rect x="354" y="512" width="48" height="112" rx="12" transform="rotate(90 354 512)" fill="white"/>
+</clipPath>
+<clipPath id="clip3_0_1">
+<rect x="354" y="608" width="48" height="112" rx="12" transform="rotate(90 354 608)" fill="white"/>
+</clipPath>
+<clipPath id="clip4_0_1">
+<rect x="354" y="704" width="48" height="112" rx="12" transform="rotate(90 354 704)" fill="white"/>
+</clipPath>
+<clipPath id="clip5_0_1">
+<rect x="176" y="48" width="100" height="128" rx="12" transform="rotate(90 176 48)" fill="white"/>
+</clipPath>
+<clipPath id="clip6_0_1">
+<rect x="176" y="180" width="100" height="128" rx="12" transform="rotate(90 176 180)" fill="white"/>
+</clipPath>
+<clipPath id="clip7_0_1">
+<rect x="176" y="312" width="100" height="128" rx="12" transform="rotate(90 176 312)" fill="white"/>
+</clipPath>
+</defs>
+</svg>
