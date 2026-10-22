@@ -1,0 +1,11 @@
+{
+  "title": "Weather",
+  "events": {
+    "sleep.enter": {
+      "download": {
+        "url": "https://crosspointer-weather-plugin.johnny353535.workers.dev/weather.bmp",
+        "dest": "/sleep.bmp"
+      }
+    }
+  }
+}
