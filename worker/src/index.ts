@@ -194,19 +194,19 @@ function replaceTextNode(node: string, values: string[]): string {
 }
 
 const staticIconPathStarts = [
-	'M731 59',
-	'M72 164',
-	'M295.5 164',
-	'M402 164',
-	'M508.5 164',
-	'M614 164',
-	'M719 164',
-	'M98 331.167',
-	'M230 318.333',
-	'M362 327.667',
-	'M637.999 336',
-	'M637.999 372',
-	'M637.999 408',
+	'M739 51',
+	'M64 160',
+	'M303.5 160',
+	'M410 160',
+	'M516.5 160',
+	'M622 160',
+	'M727 160',
+	'M90 335.167',
+	'M222 322.333',
+	'M354 331.667',
+	'M631.999 334',
+	'M631.999 374',
+	'M631.999 414',
 ];
 
 function removeStaticIcons(svg: string): string {
@@ -256,29 +256,29 @@ function insertWeatherIcons(
 	daily: Array<{ weatherCode: number; isDay: boolean }>,
 ): string {
 	const hourlyPositions = [
-		[271.5, 160],
-		[378, 160],
-		[484.5, 160],
-		[590, 160],
-		[695, 160],
+		[279.5, 156],
+		[386, 156],
+		[492.5, 156],
+		[598, 156],
+		[703, 156],
 	];
 	const dailyPositions = [
-		[628, 336],
-		[628, 372],
-		[628, 408],
+		[620, 334],
+		[620, 374],
+		[620, 414],
 	];
 	const icons = [
-		placeWeatherIcon(selectWeatherIcon(weather.current.weatherCode, weather.current.isDay), 48, 160, 48),
+		placeWeatherIcon(selectWeatherIcon(weather.current.weatherCode, weather.current.isDay), 40, 156, 48),
 		...hourly.map((forecast, index) =>
 			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), hourlyPositions[index][0], hourlyPositions[index][1], 48),
 		),
 		...daily.map((forecast, index) =>
-			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), dailyPositions[index][0], dailyPositions[index][1], 20),
+			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), dailyPositions[index][0], dailyPositions[index][1], 24),
 		),
-		placeWeatherIcon(navigation, 728, 48, 24),
-		placeWeatherIcon(umbrella, 86, 318, 24),
-		placeWeatherIcon(sunrise, 218, 318, 24),
-		placeWeatherIcon(sunset, 350, 318, 24),
+		placeWeatherIcon(navigation, 736, 40, 24),
+		placeWeatherIcon(umbrella, 78, 322, 24),
+		placeWeatherIcon(sunrise, 210, 322, 24),
+		placeWeatherIcon(sunset, 342, 322, 24),
 	].join('');
 
 	if (hourly.length !== hourlyPositions.length || daily.length !== dailyPositions.length) {
@@ -355,8 +355,28 @@ function renderSvg(weather: WeatherData): string {
 
 	let textNodeIndex = 0;
 	const renderedSvg = removeStaticIcons(svgTemplate).replace(/<text\b[\s\S]*?<\/text>/g, (node) => {
-		const replacement = replacements[textNodeIndex++];
-		return replacement ? replaceTextNode(node, replacement) : node;
+		const currentTextNodeIndex = textNodeIndex++;
+		const replacement = replacements[currentTextNodeIndex];
+		const centerXByTextNode: Record<number, number> = {
+			6: 303.5,
+			8: 410,
+			10: 516.5,
+			12: 622,
+			14: 727,
+			15: 90,
+			16: 90,
+			17: 222,
+			18: 222,
+			19: 354,
+			20: 354,
+		};
+		const centerX = centerXByTextNode[currentTextNodeIndex];
+		const positionedNode = centerX === undefined
+			? node
+			: node
+				.replace('<text ', '<text text-anchor="middle" ')
+				.replace(/(<tspan\b[^>]*\bx=")[^"]*(")/, `$1${centerX}$2`);
+		return replacement ? replaceTextNode(positionedNode, replacement) : positionedNode;
 	});
 	if (textNodeIndex !== replacements.length) {
 		throw new Error('weather.svg text layout does not match the data template');
