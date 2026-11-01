@@ -185,42 +185,57 @@ function escapeXml(value: string): string {
 	});
 }
 
-function replaceTextNode(node: string, values: string[]): string {
+function replaceTextNode(node: string, value: string): string {
 	let valueIndex = 0;
 	return node.replace(/(<tspan\b[^>]*>)([\s\S]*?)(<\/tspan>)/g, (_match, opening: string, _value: string, closing: string) => {
-		const value = values[valueIndex++];
-		return `${opening}${escapeXml(value ?? '')}${closing}`;
+		return `${opening}${escapeXml(valueIndex++ === 0 ? value : '')}${closing}`;
 	});
 }
 
-const staticIconPathStarts = [
-	'M739 51',
-	'M64 160',
-	'M303.5 160',
-	'M410 160',
-	'M516.5 160',
-	'M622 160',
-	'M727 160',
-	'M90 335.167',
-	'M222 322.333',
-	'M354 331.667',
-	'M631.999 334',
-	'M631.999 374',
-	'M631.999 414',
-];
+function escapeRegExp(value: string): string {
+	return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 
-function removeStaticIcons(svg: string): string {
-	let removedCount = 0;
-	const cleanedSvg = svg.replace(/<path\b[^>]*\bd="([^"]*)"[^>]*\/>/g, (path) => {
-		const isStaticIcon = staticIconPathStarts.some((pathStart) => path.includes(`d="${pathStart}`));
-		if (isStaticIcon) removedCount++;
-		return isStaticIcon ? '' : path;
-	});
-
-	if (removedCount !== staticIconPathStarts.length) {
-		throw new Error('weather.svg static icon layout does not match the template');
+function replaceTextById(svg: string, id: string, value: string, centerX?: number): string {
+	const openingTagPattern = new RegExp(`<text\\b[^>]*\\bid="${escapeRegExp(id)}"[^>]*>`);
+	const openingTag = openingTagPattern.exec(svg);
+	if (!openingTag || openingTag.index === undefined) {
+		throw new Error(`weather.svg is missing text element #${id}`);
 	}
-	return cleanedSvg;
+	const contentStart = openingTag.index + openingTag[0].length;
+	const contentEnd = svg.indexOf('</text>', contentStart);
+	if (contentEnd < 0) throw new Error(`weather.svg text element #${id} is not closed`);
+
+	let element = svg.slice(openingTag.index, contentEnd + '</text>'.length);
+	if (centerX !== undefined) {
+		element = element
+			.replace('<text ', '<text text-anchor="middle" ')
+			.replace(/(<tspan\b[^>]*\bx=")[^"]*(")/, `$1${centerX}$2`);
+	}
+	element = replaceTextNode(element, value);
+	return `${svg.slice(0, openingTag.index)}${element}${svg.slice(contentEnd + '</text>'.length)}`;
+}
+
+function replaceGroupContentsById(svg: string, id: string, contents: string): string {
+	const openingTagPattern = new RegExp(`<g\\b[^>]*\\bid="${escapeRegExp(id)}"[^>]*>`);
+	const openingTag = openingTagPattern.exec(svg);
+	if (!openingTag || openingTag.index === undefined) {
+		throw new Error(`weather.svg is missing icon group #${id}`);
+	}
+
+	const groupTokens = /<g\b[^>]*>|<\/g>/g;
+	groupTokens.lastIndex = openingTag.index + openingTag[0].length;
+	let depth = 1;
+	let token: RegExpExecArray | null;
+	while ((token = groupTokens.exec(svg))) {
+		if (token[0].startsWith('</')) depth--;
+		else if (!token[0].endsWith('/>')) depth++;
+		if (depth === 0) {
+			const closingTagStart = groupTokens.lastIndex - token[0].length;
+			return `${svg.slice(0, openingTag.index + openingTag[0].length)}${contents}${svg.slice(closingTagStart)}`;
+		}
+	}
+	throw new Error(`weather.svg icon group #${id} is not closed`);
 }
 
 function selectWeatherIcon(weatherCode: number, isDay: boolean): string {
@@ -240,13 +255,16 @@ function selectWeatherIcon(weatherCode: number, isDay: boolean): string {
 }
 
 function placeWeatherIcon(icon: string, x: number, y: number, size: number): string {
-	return icon
-		.replace(/<!--[^>]*-->/g, '')
-		.replace('<svg', `<svg x="${x}" y="${y}"`)
-		.replace('width="24"', `width="${size}"`)
-		.replace('height="24"', `height="${size}"`)
-		.replace(/stroke="currentColor"/g, 'stroke="black"')
+	const cleanIcon = icon.replace(/<!--[\s\S]*?-->/g, '');
+	const openingTagEnd = cleanIcon.indexOf('>');
+	const closingTagStart = cleanIcon.lastIndexOf('</svg>');
+	if (openingTagEnd < 0 || closingTagStart < openingTagEnd) {
+		throw new Error('Weather icon SVG is malformed');
+	}
+	const iconContents = cleanIcon
+		.slice(openingTagEnd + 1, closingTagStart)
 		.replace(/\n/g, '');
+	return `<g transform="translate(${x} ${y}) scale(${size / 24})" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${iconContents}</g>`;
 }
 
 function insertWeatherIcons(
@@ -255,36 +273,29 @@ function insertWeatherIcons(
 	hourly: Array<{ weatherCode: number; isDay: boolean }>,
 	daily: Array<{ weatherCode: number; isDay: boolean }>,
 ): string {
-	const hourlyPositions = [
-		[279.5, 156],
-		[386, 156],
-		[492.5, 156],
-		[598, 156],
-		[703, 156],
-	];
-	const dailyPositions = [
-		[620, 334],
-		[620, 374],
-		[620, 414],
-	];
-	const icons = [
-		placeWeatherIcon(selectWeatherIcon(weather.current.weatherCode, weather.current.isDay), 40, 156, 48),
-		...hourly.map((forecast, index) =>
-			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), hourlyPositions[index][0], hourlyPositions[index][1], 48),
-		),
-		...daily.map((forecast, index) =>
-			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), dailyPositions[index][0], dailyPositions[index][1], 24),
-		),
-		placeWeatherIcon(navigation, 736, 40, 24),
-		placeWeatherIcon(umbrella, 78, 322, 24),
-		placeWeatherIcon(sunrise, 210, 322, 24),
-		placeWeatherIcon(sunset, 342, 322, 24),
-	].join('');
-
+	const hourlyPositions = [[279.5, 156], [386, 156], [492.5, 156], [598, 156], [703, 156]];
+	const dailyPositions = [[620, 334], [620, 374], [620, 414]];
 	if (hourly.length !== hourlyPositions.length || daily.length !== dailyPositions.length) {
 		throw new Error('weather icon positions do not match the data template');
 	}
-	return svg.replace('</svg>', `${icons}</svg>`);
+
+	const icons: Array<[string, string]> = [
+		['icon-location', placeWeatherIcon(navigation, 736, 40, 24)],
+		['icon-hour-now', placeWeatherIcon(selectWeatherIcon(weather.current.weatherCode, weather.current.isDay), 40, 156, 48)],
+		...hourly.map((forecast, index) => [
+			`icon-hour-${index + 1}`,
+			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), hourlyPositions[index][0], hourlyPositions[index][1], 48),
+		] as [string, string]),
+		['icon-umbrella', placeWeatherIcon(umbrella, 78, 322, 24)],
+		['icon-sunrise', placeWeatherIcon(sunrise, 210, 322, 24)],
+		['icon-sunset', placeWeatherIcon(sunset, 342, 322, 24)],
+		...daily.map((forecast, index) => [
+			`icon-forecast-${index + 1}`,
+			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), dailyPositions[index][0], dailyPositions[index][1], 24),
+		] as [string, string]),
+	];
+
+	return icons.reduce((result, [id, icon]) => replaceGroupContentsById(result, id, icon), svg);
 }
 
 function rotateLandscapeSvgToPortrait(svg: string): string {
@@ -327,60 +338,32 @@ function renderSvg(weather: WeatherData): string {
 		isDay: true,
 	}));
 
-	const replacements: Array<string[] | undefined> = [
-		[formatDate(weather.daily.time[0])],
-		['Berlin'],
-		[formatHour(weather.current.time)],
-		[formatTemperature(weather.current.temperature)],
-		[`H: ${formatTemperature(weather.daily.maximumTemperature[0])} L: ${formatTemperature(weather.daily.minimumTemperature[0])}`],
+	const textReplacements: Array<[string, string, number?]> = [
+		['text-date', formatDate(weather.daily.time[0])],
+		['text-city', 'Berlin'],
+		['hour-now', formatHour(weather.current.time)],
+		['text-hour-now', formatTemperature(weather.current.temperature)],
+		['text-high-low', `H: ${formatTemperature(weather.daily.maximumTemperature[0])} L: ${formatTemperature(weather.daily.minimumTemperature[0])}`],
+		['chance-of-rain', `${Math.round(weather.hourly.precipitationProbability[currentHourIndex])}%`, 90],
+		['chance-of-rain-title', 'RAIN', 90],
+		['sunrise-time', formatHour(weather.daily.sunrise[0]), 222],
+		['sunrise-title', 'SUNRISE', 222],
+		['sunset-time', formatHour(weather.daily.sunset[0]), 354],
+		['sunset-title', 'SUNSET', 354],
 	];
-
-	for (const forecast of hourly) {
-		replacements.push([forecast.time], [forecast.temperature]);
+	for (let index = 0; index < hourly.length; index++) {
+		textReplacements.push([`hour-${index + 1}`, hourly[index].time]);
+		textReplacements.push([`temperature-hour-${index + 1}`, hourly[index].temperature, [303.5, 410, 516.5, 622, 727][index]]);
+	}
+	for (let index = 0; index < daily.length; index++) {
+		textReplacements.push([`day-forecast-${index + 1}`, daily[index].day]);
+		textReplacements.push([`high-low-forecast-${index + 1}`, `${daily[index].maximum}° / ${daily[index].minimum}°`]);
 	}
 
-	replacements.push(
-		[`${Math.round(weather.hourly.precipitationProbability[currentHourIndex])}%`],
-		['RAIN'],
-		[formatHour(weather.daily.sunrise[0])],
-		['SUNRISE'],
-		[formatHour(weather.daily.sunset[0])],
-		['SUNSET'],
-		['FORECAST'],
+	const renderedSvg = textReplacements.reduce(
+		(svg, [id, value, centerX]) => replaceTextById(svg, id, value, centerX),
+		svgTemplate,
 	);
-
-	for (const forecast of daily) {
-		replacements.push([forecast.day], [`${forecast.maximum}° / ${forecast.minimum}°`]);
-	}
-
-	let textNodeIndex = 0;
-	const renderedSvg = removeStaticIcons(svgTemplate).replace(/<text\b[\s\S]*?<\/text>/g, (node) => {
-		const currentTextNodeIndex = textNodeIndex++;
-		const replacement = replacements[currentTextNodeIndex];
-		const centerXByTextNode: Record<number, number> = {
-			6: 303.5,
-			8: 410,
-			10: 516.5,
-			12: 622,
-			14: 727,
-			15: 90,
-			16: 90,
-			17: 222,
-			18: 222,
-			19: 354,
-			20: 354,
-		};
-		const centerX = centerXByTextNode[currentTextNodeIndex];
-		const positionedNode = centerX === undefined
-			? node
-			: node
-				.replace('<text ', '<text text-anchor="middle" ')
-				.replace(/(<tspan\b[^>]*\bx=")[^"]*(")/, `$1${centerX}$2`);
-		return replacement ? replaceTextNode(positionedNode, replacement) : positionedNode;
-	});
-	if (textNodeIndex !== replacements.length) {
-		throw new Error('weather.svg text layout does not match the data template');
-	}
 	return rotateLandscapeSvgToPortrait(insertWeatherIcons(renderedSvg, weather, hourly, daily));
 }
 

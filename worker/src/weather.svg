@@ -1,64 +1,128 @@
 <svg width="800" height="480" viewBox="0 0 800 480" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="800" height="480" fill="#1E1E1E"/>
+<g id="Dashboard v2">
 <rect width="800" height="480" fill="white"/>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="40" y="60.7273">Wednesday, August 23</tspan></text>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="665.344" y="60.7273">Berlin</tspan></text>
-<path d="M739 51L758 42L749 61L747 53L739 51Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="40" y="136.727">13:15</tspan></text>
-<path d="M64 160V164M49.86 165.86L52.68 168.68M80 180H84M78.14 165.86L75.32 168.68M71.894 181.3C72.1402 179.809 71.959 178.279 71.3714 176.886C70.7839 175.494 69.814 174.297 68.5741 173.433C67.3341 172.569 65.8749 172.074 64.3653 172.005C62.8557 171.936 61.3574 172.297 60.044 173.044M66 200H54C52.108 200 50.2549 199.462 48.6559 198.451C47.0569 197.439 45.7777 195.995 44.9669 194.285C44.1561 192.576 43.8468 190.672 44.0752 188.793C44.3035 186.915 45.06 185.14 46.2568 183.675C47.4536 182.209 49.0415 181.113 50.8363 180.514C52.631 179.915 54.5589 179.838 56.3959 180.291C58.233 180.744 59.9038 181.708 61.2144 183.073C62.5251 184.438 63.4216 186.146 63.8 188H66C67.5913 188 69.1175 188.632 70.2427 189.757C71.3679 190.883 72 192.409 72 194C72 195.591 71.3679 197.117 70.2427 198.243C69.1175 199.368 67.5913 200 66 200Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="64" letter-spacing="0em"><tspan x="96" y="203.273">23&#xb0;</tspan></text>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="40" y="240.727">H: 24&#xb0; L: 19&#xb0;</tspan></text>
+<g id="Date">
+<text id="text-date" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="40" y="60.7273">Wednesday, August 23</tspan></text>
+<g id="Frame 16">
+<text id="text-city" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="665.344" y="60.7273">Berlin</tspan></text>
+<g id="icon-location">
+<path id="Vector" d="M739 51L758 42L749 61L747 53L739 51Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+</g>
+</g>
+</g>
+<g id="Frame 7">
+<g id="Frame 1">
+<g id="Frame 17">
+<text id="hour-now" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="40" y="136.727">13:15</tspan></text>
+<g id="Frame 18">
+<g id="icon-hour-now">
+<path id="Vector_2" d="M64 160V164M49.86 165.86L52.68 168.68M80 180H84M78.14 165.86L75.32 168.68M71.894 181.3C72.1402 179.809 71.959 178.279 71.3714 176.886C70.7839 175.494 69.814 174.297 68.5741 173.433C67.3341 172.569 65.8749 172.074 64.3653 172.005C62.8557 171.936 61.3574 172.297 60.044 173.044M66 200H54C52.108 200 50.2549 199.462 48.6559 198.451C47.0569 197.439 45.7777 195.995 44.9669 194.285C44.1561 192.576 43.8468 190.672 44.0752 188.793C44.3035 186.915 45.06 185.14 46.2568 183.675C47.4536 182.209 49.0415 181.113 50.8363 180.514C52.631 179.915 54.5589 179.838 56.3959 180.291C58.233 180.744 59.9038 181.708 61.2144 183.073C62.5251 184.438 63.4216 186.146 63.8 188H66C67.5913 188 69.1175 188.632 70.2427 189.757C71.3679 190.883 72 192.409 72 194C72 195.591 71.3679 197.117 70.2427 198.243C69.1175 199.368 67.5913 200 66 200Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+</g>
+<text id="text-hour-now" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="64" letter-spacing="0em"><tspan x="96" y="203.273">23&#xb0;</tspan></text>
+</g>
+<text id="text-high-low" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="40" y="240.727">H: 24&#xb0; L: 19&#xb0;</tspan></text>
+</g>
+<g id="Frame 20">
 <rect x="237" y="116.5" width="1" height="127" stroke="black"/>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="270.254" y="140.727">14:00</tspan></text>
-<path d="M303.5 160V164M289.36 165.86L292.18 168.68M319.5 180H323.5M317.64 165.86L314.82 168.68M311.394 181.3C311.64 179.809 311.459 178.279 310.871 176.886C310.284 175.494 309.314 174.297 308.074 173.433C306.834 172.569 305.375 172.074 303.865 172.005C302.356 171.936 300.857 172.297 299.544 173.044M305.5 200H293.5C291.608 200 289.755 199.462 288.156 198.451C286.557 197.439 285.278 195.995 284.467 194.285C283.656 192.576 283.347 190.672 283.575 188.793C283.803 186.915 284.56 185.14 285.757 183.675C286.954 182.209 288.542 181.113 290.336 180.514C292.131 179.915 294.059 179.838 295.896 180.291C297.733 180.744 299.404 181.708 300.714 183.073C302.025 184.438 302.922 186.146 303.3 188H305.5C307.091 188 308.617 188.632 309.743 189.757C310.868 190.883 311.5 192.409 311.5 194C311.5 195.591 310.868 197.117 309.743 198.243C308.617 199.368 307.091 200 305.5 200Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="283.098" y="236.727">22&#xb0;</tspan></text>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="377.152" y="140.727">15:00</tspan></text>
-<path d="M410 160V164M395.86 165.86L398.68 168.68M426 180H430M424.14 165.86L421.32 168.68M417.894 181.3C418.14 179.809 417.959 178.279 417.371 176.886C416.784 175.494 415.814 174.297 414.574 173.433C413.334 172.569 411.875 172.074 410.365 172.005C408.856 171.936 407.357 172.297 406.044 173.044M412 200H400C398.108 200 396.255 199.462 394.656 198.451C393.057 197.439 391.778 195.995 390.967 194.285C390.156 192.576 389.847 190.672 390.075 188.793C390.303 186.915 391.06 185.14 392.257 183.675C393.454 182.209 395.042 181.113 396.836 180.514C398.631 179.915 400.559 179.838 402.396 180.291C404.233 180.744 405.904 181.708 407.214 183.073C408.525 184.438 409.422 186.146 409.8 188H412C413.591 188 415.117 188.632 416.243 189.757C417.368 190.883 418 192.409 418 194C418 195.591 417.368 197.117 416.243 198.243C415.117 199.368 413.591 200 412 200Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="389.598" y="236.727">22&#xb0;</tspan></text>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="483.465" y="140.727">16:00</tspan></text>
-<path d="M516.5 160V164M502.36 165.86L505.18 168.68M532.5 180H536.5M530.64 165.86L527.82 168.68M524.394 181.3C524.64 179.809 524.459 178.279 523.871 176.886C523.284 175.494 522.314 174.297 521.074 173.433C519.834 172.569 518.375 172.074 516.865 172.005C515.356 171.936 513.857 172.297 512.544 173.044M498.5 196C497.601 194.8 496.983 193.414 496.693 191.943C496.402 190.472 496.446 188.955 496.82 187.504C497.195 186.052 497.892 184.703 498.858 183.557C499.824 182.411 501.036 181.497 502.403 180.883C503.771 180.268 505.259 179.969 506.758 180.007C508.256 180.045 509.727 180.42 511.061 181.103C512.396 181.787 513.559 182.761 514.466 183.955C515.373 185.149 516 186.531 516.3 188H518.5C519.717 187.998 520.906 188.366 521.908 189.056C522.911 189.745 523.68 190.724 524.114 191.86C524.548 192.997 524.626 194.239 524.338 195.422C524.05 196.604 523.409 197.671 522.5 198.48M514.5 196V200M506.5 194V198" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="496.098" y="236.727">22&#xb0;</tspan></text>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="590.113" y="140.727">17:00</tspan></text>
-<path d="M622 160V164M622 196V200M607.86 165.86L610.68 168.68M633.32 191.32L636.14 194.14M602 180H606M638 180H642M610.68 191.32L607.86 194.14M636.14 165.86L633.32 168.68M630 180C630 184.418 626.418 188 622 188C617.582 188 614 184.418 614 180C614 175.582 617.582 172 622 172C626.418 172 630 175.582 630 180Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="601.598" y="236.727">22&#xb0;</tspan></text>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="694" y="140.727">18:00</tspan></text>
-<path d="M727 160V164M727 196V200M712.86 165.86L715.68 168.68M738.32 191.32L741.14 194.14M707 180H711M743 180H747M715.68 191.32L712.86 194.14M741.14 165.86L738.32 168.68M735 180C735 184.418 731.418 188 727 188C722.582 188 719 184.418 719 180C719 175.582 722.582 172 727 172C731.418 172 735 175.582 735 180Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="706.598" y="236.727">22&#xb0;</tspan></text>
+</g>
+<g id="Frame 9">
+<g id="Frame 14">
+<text id="hour-1" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="270.254" y="140.727">14:00</tspan></text>
+<g id="icon-hour-1">
+<path id="Vector_3" d="M303.5 160V164M289.36 165.86L292.18 168.68M319.5 180H323.5M317.64 165.86L314.82 168.68M311.394 181.3C311.64 179.809 311.459 178.279 310.871 176.886C310.284 175.494 309.314 174.297 308.074 173.433C306.834 172.569 305.375 172.074 303.865 172.005C302.356 171.936 300.857 172.297 299.544 173.044M305.5 200H293.5C291.608 200 289.755 199.462 288.156 198.451C286.557 197.439 285.278 195.995 284.467 194.285C283.656 192.576 283.347 190.672 283.575 188.793C283.803 186.915 284.56 185.14 285.757 183.675C286.954 182.209 288.542 181.113 290.336 180.514C292.131 179.915 294.059 179.838 295.896 180.291C297.733 180.744 299.404 181.708 300.714 183.073C302.025 184.438 302.922 186.146 303.3 188H305.5C307.091 188 308.617 188.632 309.743 189.757C310.868 190.883 311.5 192.409 311.5 194C311.5 195.591 310.868 197.117 309.743 198.243C308.617 199.368 307.091 200 305.5 200Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+</g>
+<text id="temperature-hour-1" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="283.098" y="236.727">22&#xb0;</tspan></text>
+</g>
+<g id="Frame 15">
+<text id="hour-2" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="377.152" y="140.727">15:00</tspan></text>
+<g id="icon-hour-2">
+<path id="Vector_4" d="M410 160V164M395.86 165.86L398.68 168.68M426 180H430M424.14 165.86L421.32 168.68M417.894 181.3C418.14 179.809 417.959 178.279 417.371 176.886C416.784 175.494 415.814 174.297 414.574 173.433C413.334 172.569 411.875 172.074 410.365 172.005C408.856 171.936 407.357 172.297 406.044 173.044M412 200H400C398.108 200 396.255 199.462 394.656 198.451C393.057 197.439 391.778 195.995 390.967 194.285C390.156 192.576 389.847 190.672 390.075 188.793C390.303 186.915 391.06 185.14 392.257 183.675C393.454 182.209 395.042 181.113 396.836 180.514C398.631 179.915 400.559 179.838 402.396 180.291C404.233 180.744 405.904 181.708 407.214 183.073C408.525 184.438 409.422 186.146 409.8 188H412C413.591 188 415.117 188.632 416.243 189.757C417.368 190.883 418 192.409 418 194C418 195.591 417.368 197.117 416.243 198.243C415.117 199.368 413.591 200 412 200Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+</g>
+<text id="temperature-hour-2" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="389.598" y="236.727">22&#xb0;</tspan></text>
+</g>
+<g id="Frame 16_2">
+<text id="hour-3" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="483.465" y="140.727">16:00</tspan></text>
+<g id="icon-hour-3">
+<path id="Vector_5" d="M516.5 160V164M502.36 165.86L505.18 168.68M532.5 180H536.5M530.64 165.86L527.82 168.68M524.394 181.3C524.64 179.809 524.459 178.279 523.871 176.886C523.284 175.494 522.314 174.297 521.074 173.433C519.834 172.569 518.375 172.074 516.865 172.005C515.356 171.936 513.857 172.297 512.544 173.044M498.5 196C497.601 194.8 496.983 193.414 496.693 191.943C496.402 190.472 496.446 188.955 496.82 187.504C497.195 186.052 497.892 184.703 498.858 183.557C499.824 182.411 501.036 181.497 502.403 180.883C503.771 180.268 505.259 179.969 506.758 180.007C508.256 180.045 509.727 180.42 511.061 181.103C512.396 181.787 513.559 182.761 514.466 183.955C515.373 185.149 516 186.531 516.3 188H518.5C519.717 187.998 520.906 188.366 521.908 189.056C522.911 189.745 523.68 190.724 524.114 191.86C524.548 192.997 524.626 194.239 524.338 195.422C524.05 196.604 523.409 197.671 522.5 198.48M514.5 196V200M506.5 194V198" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+</g>
+<text id="temperature-hour-3" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="496.098" y="236.727">22&#xb0;</tspan></text>
+</g>
+<g id="Frame 17_2">
+<text id="hour-4" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="590.113" y="140.727">17:00</tspan></text>
+<g id="icon-hour-4">
+<path id="Vector_6" d="M622 160V164M622 196V200M607.86 165.86L610.68 168.68M633.32 191.32L636.14 194.14M602 180H606M638 180H642M610.68 191.32L607.86 194.14M636.14 165.86L633.32 168.68M630 180C630 184.418 626.418 188 622 188C617.582 188 614 184.418 614 180C614 175.582 617.582 172 622 172C626.418 172 630 175.582 630 180Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+</g>
+<text id="temperature-hour-4" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="601.598" y="236.727">22&#xb0;</tspan></text>
+</g>
+<g id="Frame 18_2">
+<text id="hour-5" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="694" y="140.727">18:00</tspan></text>
+<g id="icon-hour-5">
+<path id="Vector_7" d="M727 160V164M727 196V200M712.86 165.86L715.68 168.68M738.32 191.32L741.14 194.14M707 180H711M743 180H747M715.68 191.32L712.86 194.14M741.14 165.86L738.32 168.68M735 180C735 184.418 731.418 188 727 188C722.582 188 719 184.418 719 180C719 175.582 722.582 172 727 172C731.418 172 735 175.582 735 180Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+</g>
+<text id="temperature-hour-5" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="706.598" y="236.727">22&#xb0;</tspan></text>
+</g>
+</g>
+</g>
+</g>
+<g id="Frame 21">
+<g id="Frame 9_2">
+<g id="Frame 17_3">
 <rect x="40" y="300" width="100" height="136" rx="12" stroke="black" stroke-width="2" stroke-miterlimit="16"/>
-<g clip-path="url(#clip0_0_1)">
-<path d="M90 335.167V343.333C90 343.952 90.2459 344.546 90.6835 344.983C91.121 345.421 91.7145 345.667 92.3334 345.667C92.9522 345.667 93.5457 345.421 93.9833 344.983C94.4209 344.546 94.6667 343.952 94.6667 343.333M90 322.333V324.667M100.491 335.167C100.672 335.168 100.851 335.127 101.014 335.048C101.177 334.968 101.319 334.851 101.429 334.707C101.538 334.562 101.613 334.395 101.647 334.216C101.68 334.038 101.672 333.855 101.622 333.68C100.961 331.101 99.4595 328.814 97.3554 327.182C95.2513 325.549 92.6638 324.663 90.0006 324.663C87.3375 324.663 84.75 325.549 82.6459 327.182C80.5418 328.814 79.0406 331.101 78.3789 333.68C78.3294 333.854 78.3209 334.036 78.354 334.214C78.3871 334.391 78.4608 334.559 78.5695 334.703C78.6782 334.847 78.8187 334.963 78.9802 335.044C79.1417 335.125 79.3196 335.167 79.5 335.167H100.491Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<g id="icon-umbrella" clip-path="url(#clip0_0_1)">
+<path id="Vector_8" d="M90 335.167V343.333C90 343.952 90.2459 344.546 90.6835 344.983C91.121 345.421 91.7145 345.667 92.3334 345.667C92.9522 345.667 93.5457 345.421 93.9833 344.983C94.4209 344.546 94.6667 343.952 94.6667 343.333M90 322.333V324.667M100.491 335.167C100.672 335.168 100.851 335.127 101.014 335.048C101.177 334.968 101.319 334.851 101.429 334.707C101.538 334.562 101.613 334.395 101.647 334.216C101.68 334.038 101.672 333.855 101.622 333.68C100.961 331.101 99.4595 328.814 97.3554 327.182C95.2513 325.549 92.6638 324.663 90.0006 324.663C87.3375 324.663 84.75 325.549 82.6459 327.182C80.5418 328.814 79.0406 331.101 78.3789 333.68C78.3294 333.854 78.3209 334.036 78.354 334.214C78.3871 334.391 78.4608 334.559 78.5695 334.703C78.6782 334.847 78.8187 334.963 78.9802 335.044C79.1417 335.125 79.3196 335.167 79.5 335.167H100.491Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
 </g>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="64.418" y="380.727">20%</tspan></text>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="600" letter-spacing="0em"><tspan x="66.1035" y="413.273">RAIN</tspan></text>
+<text id="chance-of-rain" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="64.418" y="380.727">20%</tspan></text>
+<text id="chance-of-rain-title" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="600" letter-spacing="0em"><tspan x="66.1035" y="413.273">RAIN</tspan></text>
+</g>
+<g id="Frame 16_3">
 <rect x="172" y="300" width="100" height="136" rx="12" stroke="black" stroke-width="2" stroke-miterlimit="16"/>
-<g clip-path="url(#clip1_0_1)">
-<path d="M222 322.333V331.667M226.667 327L222 322.333L217.333 327M213.752 332.752L215.397 334.397M210.333 341H212.667M231.333 341H233.667M230.248 332.752L228.603 334.397M233.667 345.667H210.333M226.667 341C226.667 339.762 226.175 338.575 225.3 337.7C224.425 336.825 223.238 336.333 222 336.333C220.762 336.333 219.575 336.825 218.7 337.7C217.825 338.575 217.333 339.762 217.333 341" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<g id="icon-sunrise" clip-path="url(#clip1_0_1)">
+<path id="Vector_9" d="M222 322.333V331.667M226.667 327L222 322.333L217.333 327M213.752 332.752L215.397 334.397M210.333 341H212.667M231.333 341H233.667M230.248 332.752L228.603 334.397M233.667 345.667H210.333M226.667 341C226.667 339.762 226.175 338.575 225.3 337.7C224.425 336.825 223.238 336.333 222 336.333C220.762 336.333 219.575 336.825 218.7 337.7C217.825 338.575 217.333 339.762 217.333 341" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
 </g>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="186.961" y="380.727">08:34</tspan></text>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="600" letter-spacing="0em"><tspan x="178.943" y="413.273">SUNRISE</tspan></text>
+<text id="sunrise-time" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="186.961" y="380.727">08:34</tspan></text>
+<text id="sunrise-title" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="600" letter-spacing="0em"><tspan x="178.943" y="413.273">SUNRISE</tspan></text>
+</g>
+<g id="Frame 15_2">
 <rect x="304" y="300" width="100" height="136" rx="12" stroke="black" stroke-width="2" stroke-miterlimit="16"/>
-<g clip-path="url(#clip2_0_1)">
-<path d="M354 331.667V322.333M349.333 327L354 331.667L358.667 327M345.752 332.752L347.397 334.397M342.333 341H344.667M363.333 341H365.667M362.248 332.752L360.603 334.397M365.667 345.667H342.333M358.667 341C358.667 339.762 358.175 338.575 357.3 337.7C356.425 336.825 355.238 336.333 354 336.333C352.762 336.333 351.575 336.825 350.7 337.7C349.825 338.575 349.333 339.762 349.333 341" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<g id="icon-sunset" clip-path="url(#clip2_0_1)">
+<path id="Vector_10" d="M354 331.667V322.333M349.333 327L354 331.667L358.667 327M345.752 332.752L347.397 334.397M342.333 341H344.667M363.333 341H365.667M362.248 332.752L360.603 334.397M365.667 345.667H342.333M358.667 341C358.667 339.762 358.175 338.575 357.3 337.7C356.425 336.825 355.238 336.333 354 336.333C352.762 336.333 351.575 336.825 350.7 337.7C349.825 338.575 349.333 339.762 349.333 341" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
 </g>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="321.48" y="380.727">21:03</tspan></text>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="600" letter-spacing="0em"><tspan x="313.59" y="413.273">SUNSET</tspan></text>
+<text id="sunset-time" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="321.48" y="380.727">21:03</tspan></text>
+<text id="sunset-title" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="600" letter-spacing="0em"><tspan x="313.59" y="413.273">SUNSET</tspan></text>
+</g>
+</g>
+<g id="Frame 20_2">
 <rect x="474.5" y="296.5" width="1" height="143" stroke="black"/>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="600" letter-spacing="0em"><tspan x="546" y="313.273">FORECAST</tspan></text>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="546" y="354.727">THU</tspan></text>
-<g clip-path="url(#clip3_0_1)">
-<path d="M631.999 334V336.4M623.515 337.516L625.207 339.208M641.6 346H644M640.484 337.516L638.792 339.208M636.736 346.78C636.884 345.885 636.775 344.967 636.422 344.132C636.07 343.297 635.488 342.578 634.744 342.06C634 341.541 633.124 341.244 632.219 341.203C631.313 341.162 630.414 341.378 629.626 341.826M633.199 358H625.999C624.864 358 623.752 357.677 622.792 357.071C621.833 356.464 621.065 355.597 620.579 354.571C620.092 353.546 619.907 352.403 620.044 351.276C620.181 350.149 620.635 349.084 621.353 348.205C622.071 347.326 623.024 346.668 624.101 346.309C625.178 345.949 626.334 345.903 627.437 346.174C628.539 346.446 629.542 347.025 630.328 347.844C631.114 348.663 631.652 349.688 631.879 350.8H633.199C634.154 350.8 635.07 351.179 635.745 351.854C636.42 352.53 636.8 353.445 636.8 354.4C636.8 355.355 636.42 356.27 635.745 356.946C635.07 357.621 634.154 358 633.199 358Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
 </g>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="658" y="354.727">20&#xb0; / 10&#xb0;</tspan></text>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="546" y="394.727">FRI</tspan></text>
-<g clip-path="url(#clip4_0_1)">
-<path d="M631.999 374V376.4M623.515 377.516L625.207 379.208M641.6 386H644M640.484 377.516L638.792 379.208M636.736 386.78C636.884 385.885 636.775 384.967 636.422 384.132C636.07 383.297 635.488 382.578 634.744 382.06C634 381.541 633.124 381.244 632.219 381.203C631.313 381.162 630.414 381.378 629.626 381.826M633.199 398H625.999C624.864 398 623.752 397.677 622.792 397.071C621.833 396.464 621.065 395.597 620.579 394.571C620.092 393.546 619.907 392.403 620.044 391.276C620.181 390.149 620.635 389.084 621.353 388.205C622.071 387.326 623.024 386.668 624.101 386.309C625.178 385.949 626.334 385.903 627.437 386.174C628.539 386.446 629.542 387.025 630.328 387.844C631.114 388.663 631.652 389.688 631.879 390.8H633.199C634.154 390.8 635.07 391.179 635.745 391.854C636.42 392.53 636.8 393.445 636.8 394.4C636.8 395.355 636.42 396.27 635.745 396.946C635.07 397.621 634.154 398 633.199 398Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<g id="Weather">
+<text id="FORECAST" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="20" font-weight="600" letter-spacing="0em"><tspan x="546" y="313.273">FORECAST</tspan></text>
+<g id="Frame 6">
+<g id="Frame 3">
+<text id="day-forecast-1" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="546" y="354.727">THU</tspan></text>
+<g id="icon-forecast-1" clip-path="url(#clip3_0_1)">
+<path id="Vector_11" d="M631.999 334V336.4M623.515 337.516L625.207 339.208M641.6 346H644M640.484 337.516L638.792 339.208M636.736 346.78C636.884 345.885 636.775 344.967 636.422 344.132C636.07 343.297 635.488 342.578 634.744 342.06C634 341.541 633.124 341.244 632.219 341.203C631.313 341.162 630.414 341.378 629.626 341.826M633.199 358H625.999C624.864 358 623.752 357.677 622.792 357.071C621.833 356.464 621.065 355.597 620.579 354.571C620.092 353.546 619.907 352.403 620.044 351.276C620.181 350.149 620.635 349.084 621.353 348.205C622.071 347.326 623.024 346.668 624.101 346.309C625.178 345.949 626.334 345.903 627.437 346.174C628.539 346.446 629.542 347.025 630.328 347.844C631.114 348.663 631.652 349.688 631.879 350.8H633.199C634.154 350.8 635.07 351.179 635.745 351.854C636.42 352.53 636.8 353.445 636.8 354.4C636.8 355.355 636.42 356.27 635.745 356.946C635.07 357.621 634.154 358 633.199 358Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
 </g>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="658" y="394.727">22&#xb0; / 8&#xb0;</tspan></text>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="546" y="434.727">SAT</tspan></text>
-<g clip-path="url(#clip5_0_1)">
-<path d="M631.999 414V416.4M623.515 417.516L625.207 419.208M641.6 426H644M640.484 417.516L638.792 419.208M636.736 426.78C636.884 425.885 636.775 424.967 636.422 424.132C636.07 423.297 635.488 422.578 634.744 422.06C634 421.541 633.124 421.244 632.219 421.203C631.313 421.162 630.414 421.378 629.626 421.826M633.199 438H625.999C624.864 438 623.752 437.677 622.792 437.071C621.833 436.464 621.065 435.597 620.579 434.571C620.092 433.546 619.907 432.403 620.044 431.276C620.181 430.149 620.635 429.084 621.353 428.205C622.071 427.326 623.024 426.668 624.101 426.309C625.178 425.949 626.334 425.903 627.437 426.174C628.539 426.446 629.542 427.025 630.328 427.844C631.114 428.663 631.652 429.688 631.879 430.8H633.199C634.154 430.8 635.07 431.179 635.745 431.854C636.42 432.53 636.8 433.445 636.8 434.4C636.8 435.355 636.42 436.27 635.745 436.946C635.07 437.621 634.154 438 633.199 438Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+<text id="high-low-forecast-1" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="658" y="354.727">20&#xb0; / 10&#xb0;</tspan></text>
 </g>
-<text fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="658" y="434.727">19&#xb0; / 12&#xb0;</tspan></text>
+<g id="Frame 6_2">
+<text id="day-forecast-2" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="546" y="394.727">FRI</tspan></text>
+<g id="icon-forecast-2" clip-path="url(#clip4_0_1)">
+<path id="Vector_12" d="M631.999 374V376.4M623.515 377.516L625.207 379.208M641.6 386H644M640.484 377.516L638.792 379.208M636.736 386.78C636.884 385.885 636.775 384.967 636.422 384.132C636.07 383.297 635.488 382.578 634.744 382.06C634 381.541 633.124 381.244 632.219 381.203C631.313 381.162 630.414 381.378 629.626 381.826M633.199 398H625.999C624.864 398 623.752 397.677 622.792 397.071C621.833 396.464 621.065 395.597 620.579 394.571C620.092 393.546 619.907 392.403 620.044 391.276C620.181 390.149 620.635 389.084 621.353 388.205C622.071 387.326 623.024 386.668 624.101 386.309C625.178 385.949 626.334 385.903 627.437 386.174C628.539 386.446 629.542 387.025 630.328 387.844C631.114 388.663 631.652 389.688 631.879 390.8H633.199C634.154 390.8 635.07 391.179 635.745 391.854C636.42 392.53 636.8 393.445 636.8 394.4C636.8 395.355 636.42 396.27 635.745 396.946C635.07 397.621 634.154 398 633.199 398Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+</g>
+<text id="high-low-forecast-2" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="658" y="394.727">22&#xb0; / 8&#xb0;</tspan></text>
+</g>
+<g id="Frame 7_2">
+<text id="day-forecast-3" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="546" y="434.727">SAT</tspan></text>
+<g id="icon-forecast-3" clip-path="url(#clip5_0_1)">
+<path id="Vector_13" d="M631.999 414V416.4M623.515 417.516L625.207 419.208M641.6 426H644M640.484 417.516L638.792 419.208M636.736 426.78C636.884 425.885 636.775 424.967 636.422 424.132C636.07 423.297 635.488 422.578 634.744 422.06C634 421.541 633.124 421.244 632.219 421.203C631.313 421.162 630.414 421.378 629.626 421.826M633.199 438H625.999C624.864 438 623.752 437.677 622.792 437.071C621.833 436.464 621.065 435.597 620.579 434.571C620.092 433.546 619.907 432.403 620.044 431.276C620.181 430.149 620.635 429.084 621.353 428.205C622.071 427.326 623.024 426.668 624.101 426.309C625.178 425.949 626.334 425.903 627.437 426.174C628.539 426.446 629.542 427.025 630.328 427.844C631.114 428.663 631.652 429.688 631.879 430.8H633.199C634.154 430.8 635.07 431.179 635.745 431.854C636.42 432.53 636.8 433.445 636.8 434.4C636.8 435.355 636.42 436.27 635.745 436.946C635.07 437.621 634.154 438 633.199 438Z" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+</g>
+<text id="high-low-forecast-3" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="658" y="434.727">19&#xb0; / 12&#xb0;</tspan></text>
+</g>
+</g>
+</g>
+</g>
+</g>
 <defs>
 <clipPath id="clip0_0_1">
 <rect width="28" height="28" fill="white" transform="translate(76 320)"/>
