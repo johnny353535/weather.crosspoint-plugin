@@ -194,19 +194,19 @@ function replaceTextNode(node: string, values: string[]): string {
 }
 
 const staticIconPathStarts = [
-	'M422.833 742.5',
-	'M316 64',
-	'M318 342',
-	'M318 439.5',
-	'M318 537',
-	'M318 634',
-	'M318 731',
-	'M144.833 90',
-	'M157.667 222',
-	'M148.333 354',
-	'M142 645.999',
-	'M106 645.999',
-	'M70 645.999',
+	'M731 59',
+	'M72 164',
+	'M295.5 164',
+	'M402 164',
+	'M508.5 164',
+	'M614 164',
+	'M719 164',
+	'M98 331.167',
+	'M230 318.333',
+	'M362 327.667',
+	'M637.999 336',
+	'M637.999 372',
+	'M637.999 408',
 ];
 
 function removeStaticIcons(svg: string): string {
@@ -242,7 +242,7 @@ function selectWeatherIcon(weatherCode: number, isDay: boolean): string {
 function placeWeatherIcon(icon: string, x: number, y: number, size: number): string {
 	return icon
 		.replace(/<!--[^>]*-->/g, '')
-		.replace('<svg', `<svg x="${x}" y="${y}" transform="rotate(45 ${x + size / 2} ${y + size / 2})"`)
+		.replace('<svg', `<svg x="${x}" y="${y}"`)
 		.replace('width="24"', `width="${size}"`)
 		.replace('height="24"', `height="${size}"`)
 		.replace(/stroke="currentColor"/g, 'stroke="black"')
@@ -256,35 +256,56 @@ function insertWeatherIcons(
 	daily: Array<{ weatherCode: number; isDay: boolean }>,
 ): string {
 	const hourlyPositions = [
-		[278, 322],
-		[278, 419.5],
-		[278, 517],
-		[278, 614],
-		[278, 711],
+		[271.5, 160],
+		[378, 160],
+		[484.5, 160],
+		[590, 160],
+		[695, 160],
 	];
 	const dailyPositions = [
-		[122, 636],
-		[86, 636],
-		[50, 636],
+		[628, 336],
+		[628, 372],
+		[628, 408],
 	];
 	const icons = [
-		placeWeatherIcon(selectWeatherIcon(weather.current.weatherCode, weather.current.isDay), 276, 44, 40),
+		placeWeatherIcon(selectWeatherIcon(weather.current.weatherCode, weather.current.isDay), 48, 160, 48),
 		...hourly.map((forecast, index) =>
-			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), hourlyPositions[index][0], hourlyPositions[index][1], 40),
+			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), hourlyPositions[index][0], hourlyPositions[index][1], 48),
 		),
 		...daily.map((forecast, index) =>
 			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), dailyPositions[index][0], dailyPositions[index][1], 20),
 		),
-		placeWeatherIcon(navigation, 414, 738, 24),
-		placeWeatherIcon(umbrella, 134, 78, 24),
-		placeWeatherIcon(sunrise, 134, 210, 24),
-		placeWeatherIcon(sunset, 134, 342, 24),
+		placeWeatherIcon(navigation, 728, 48, 24),
+		placeWeatherIcon(umbrella, 86, 318, 24),
+		placeWeatherIcon(sunrise, 218, 318, 24),
+		placeWeatherIcon(sunset, 350, 318, 24),
 	].join('');
 
 	if (hourly.length !== hourlyPositions.length || daily.length !== dailyPositions.length) {
 		throw new Error('weather icon positions do not match the data template');
 	}
 	return svg.replace('</svg>', `${icons}</svg>`);
+}
+
+function rotateLandscapeSvgToPortrait(svg: string): string {
+	const openingTag = svg.match(/^<svg\b[^>]*>/)?.[0];
+	if (!openingTag || !/\bwidth="800"/.test(openingTag) || !/\bheight="480"/.test(openingTag) || !/\bviewBox="0 0 800 480"/.test(openingTag)) {
+		throw new Error('weather.svg must use an 800×480 landscape canvas');
+	}
+
+	const contentStart = openingTag.length;
+	const contentEnd = svg.lastIndexOf('</svg>');
+	if (contentEnd < contentStart) throw new Error('weather.svg is missing its closing tag');
+
+	let content = svg.slice(contentStart, contentEnd);
+	const defs = content.match(/<defs\b[\s\S]*?<\/defs>/)?.[0] ?? '';
+	if (defs) content = content.replace(defs, '');
+	const portraitTag = openingTag
+		.replace('width="800"', 'width="480"')
+		.replace('height="480"', 'height="800"')
+		.replace('viewBox="0 0 800 480"', 'viewBox="0 0 480 800"');
+
+	return `${portraitTag}${defs}<g transform="matrix(0 1 -1 0 480 0)">${content}</g></svg>`;
 }
 
 function renderSvg(weather: WeatherData): string {
@@ -340,7 +361,7 @@ function renderSvg(weather: WeatherData): string {
 	if (textNodeIndex !== replacements.length) {
 		throw new Error('weather.svg text layout does not match the data template');
 	}
-	return insertWeatherIcons(renderedSvg, weather, hourly, daily);
+	return rotateLandscapeSvgToPortrait(insertWeatherIcons(renderedSvg, weather, hourly, daily));
 }
 
 function createBmp(pixels: Uint8Array, width: number, height: number): ArrayBuffer {
