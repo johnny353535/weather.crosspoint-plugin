@@ -6,7 +6,7 @@
   "events": {
     "sleep.enter": {
       "download": {
-        "url": "https://crosspointer-weather-plugin.johnny353535.workers.dev/weather.bmp?latitude={cfg.latitude}&longitude={cfg.longitude}&location={cfg.location}",
+        "url": "https://crosspointer-weather-plugin.johnny353535.workers.dev/weather.bmp?latitude={cfg.latitude}&longitude={cfg.longitude}&location={cfg.location}&unit={cfg.unit}",
         "dest": "/sleep.bmp"
       }
     }

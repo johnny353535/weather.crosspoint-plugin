@@ -16,6 +16,15 @@ CrossPoint.registerPlugin(async (container, api) => {
 			<button class="btn-small btn-add" id="weather-location-save" type="button" disabled>Save location</button>
 		</div>
 		<p>Choose a result, then save it. The reader uses the saved location the next time it downloads the sleep screen.</p>
+		<div class="setting-row">
+			<span class="setting-name">Temperature</span>
+			<span class="setting-control">
+				<select id="weather-temperature-unit" disabled>
+					<option value="celsius">Celsius (°C)</option>
+					<option value="fahrenheit">Fahrenheit (°F)</option>
+				</select>
+			</span>
+		</div>
 	`;
 
 	const status = container.querySelector('#weather-location-status');
@@ -23,7 +32,9 @@ CrossPoint.registerPlugin(async (container, api) => {
 	const results = container.querySelector('#weather-location-results');
 	const searchButton = container.querySelector('#weather-location-search');
 	const saveButton = container.querySelector('#weather-location-save');
+	const temperatureUnit = container.querySelector('#weather-temperature-unit');
 	let selectedPlace = null;
+	let savedConfig = {};
 
 	function setStatus(message) {
 		status.textContent = message;
@@ -115,6 +126,7 @@ CrossPoint.registerPlugin(async (container, api) => {
 		setStatus('Saving location…');
 		try {
 			const config = {
+				...savedConfig,
 				// device.json template substitutions use string-valued config entries.
 				latitude: String(selectedPlace.latitude),
 				longitude: String(selectedPlace.longitude),
@@ -122,6 +134,7 @@ CrossPoint.registerPlugin(async (container, api) => {
 				location: encodeURIComponent(selectedPlace.name),
 			};
 			await api.writeFile(configPath, btoa(JSON.stringify(config)));
+			savedConfig = config;
 			setStatus('Saved ' + selectedPlace.name + '. It will appear after the next sleep-screen download.');
 		} catch (error) {
 			setStatus('Could not save the location: ' + error.message);
@@ -129,7 +142,30 @@ CrossPoint.registerPlugin(async (container, api) => {
 		}
 	});
 
+	temperatureUnit.addEventListener('change', async () => {
+		const previousUnit = savedConfig.unit === 'fahrenheit' ? 'fahrenheit' : 'celsius';
+		const config = {
+			latitude: String(savedConfig.latitude ?? 52.52),
+			longitude: String(savedConfig.longitude ?? 13.405),
+			location: savedConfig.location || 'Berlin',
+			...savedConfig,
+			unit: temperatureUnit.value,
+		};
+		try {
+			await api.writeFile(configPath, btoa(JSON.stringify(config)));
+			savedConfig = config;
+			const locationName = decodeLocation(savedConfig.location || 'Berlin');
+			setStatus('Temperature unit saved for ' + locationName + '. It will appear after the next sleep-screen download.');
+		} catch (error) {
+			temperatureUnit.value = previousUnit;
+			setStatus('Could not save the temperature unit: ' + error.message);
+		}
+	});
+
 	const saved = await loadConfig();
+	savedConfig = saved || {};
+	temperatureUnit.value = savedConfig.unit === 'fahrenheit' ? 'fahrenheit' : 'celsius';
+	temperatureUnit.disabled = false;
 	if (saved && Number.isFinite(Number(saved.latitude)) && Number.isFinite(Number(saved.longitude))) {
 		setStatus('Current location: ' + decodeLocation(saved.location || 'Berlin') + '. Search below to change it.');
 	} else {

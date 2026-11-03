@@ -124,7 +124,9 @@ function parseWeatherResponse(value: unknown): WeatherData {
 	};
 }
 
-async function fetchWeather(latitude: number, longitude: number): Promise<WeatherData> {
+type TemperatureUnit = 'celsius' | 'fahrenheit';
+
+async function fetchWeather(latitude: number, longitude: number, temperatureUnit: TemperatureUnit): Promise<WeatherData> {
 	const weatherUrl = new URL('https://api.open-meteo.com/v1/forecast');
 	weatherUrl.searchParams.set('latitude', String(latitude));
 	weatherUrl.searchParams.set('longitude', String(longitude));
@@ -133,6 +135,7 @@ async function fetchWeather(latitude: number, longitude: number): Promise<Weathe
 	weatherUrl.searchParams.set('daily', 'weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset');
 	weatherUrl.searchParams.set('timezone', 'auto');
 	weatherUrl.searchParams.set('forecast_days', '4');
+	weatherUrl.searchParams.set('temperature_unit', temperatureUnit);
 	const response = await fetch(weatherUrl, {
 		headers: { Accept: 'application/json' },
 	});
@@ -465,7 +468,9 @@ export default {
 
 			const requestedName = url.searchParams.get('location');
 			const locationName = (!requestedName || requestedName === '{cfg.location}' ? DEFAULT_LOCATION.name : requestedName).trim().slice(0, 40) || DEFAULT_LOCATION.name;
-			const weather = await fetchWeather(latitude, longitude);
+			const requestedUnit = url.searchParams.get('unit')?.trim().toLowerCase();
+			const temperatureUnit: TemperatureUnit = requestedUnit === 'fahrenheit' ? 'fahrenheit' : 'celsius';
+			const weather = await fetchWeather(latitude, longitude, temperatureUnit);
 			const bmp = await createWeatherBmp(weather, locationName);
 			return new Response(bmp, {
 				headers: {
