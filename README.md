@@ -2,7 +2,7 @@
 
 Show current conditions and a four-day forecast on your CrossPoint sleep screen.
 
-![Weather for CrossPoint running on an Xteink X4](./docs/images/cover.jpg)
+![Weather for CrossPoint running on an Xteink X4](./cover.jpg)
 
 ## Installation
 
