@@ -1,6 +1,6 @@
 {
   "title": "Weather",
-  "description": "Local weather on your sleep screen. Set your location in plugin settings.",
+  "description": "Local weather on your sleep screen. Set your location in the plugin settings in your reader's web UI..",
   "config": {
     "file": "config.json"
   },

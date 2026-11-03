@@ -2,7 +2,7 @@
   "name": "weather",
   "title": "Weather",
   "mount": "settings",
-  "description": "Local weather on your sleep screen. Set your location in plugin settings.",
+  "description": "Local weather on your sleep screen. Set your location in the plugin settings in your reader's web UI..",
   "version": "0.1.0",
   "files": [
     "manifest.json",

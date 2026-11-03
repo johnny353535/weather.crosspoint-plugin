@@ -5,14 +5,14 @@ screen. The image refreshes when the reader enters sleep.
 
 ## Set up
 
-For a manual install, copy the files listed in `manifest.json` from this folder
-into `/plugins/weather/` on the reader's SD card. Copy the files inside the
-`weather.crosspoint-plugin` folder, not the folder itself.
-
 Open the Weather settings in the CrossPoint web interface. Search for a city,
 select the matching result, and save it. Choose automatic, 12-hour, or 24-hour
 time, then choose Celsius or Fahrenheit. Automatic time format follows the
 selected city's country. Postal-code search is not supported.
+
+For a manual install, copy the files listed in `manifest.json` from this folder
+into `/plugins/weather/` on the reader's SD card. Copy the files inside the
+`weather.crosspoint-plugin` folder, not the folder itself.
 
 The default location is Berlin. Settings are saved in this plugin's
 `config.json` file on the SD card. To use your own Worker, replace the complete
