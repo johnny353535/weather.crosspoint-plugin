@@ -7,6 +7,19 @@
 	"name": "crosspointer-weather-plugin",
 	"main": "src/index.ts",
 	"compatibility_date": "2026-10-19",
+	"cache": {
+		"enabled": true
+	},
+	"ratelimits": [
+		{
+			"name": "WEATHER_RATE_LIMITER",
+			"namespace_id": "2026110301",
+			"simple": {
+				"limit": 20,
+				"period": 60
+			}
+		}
+	],
 	"rules": [
 		{
 			"type": "Text",

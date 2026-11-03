@@ -13,22 +13,30 @@ Cloudflare Worker renders a 480×800, 1-bit BMP at `GET /weather.bmp`.
 
 City search uses Open-Meteo Geocoding. Postal-code search is not supported.
 
+The Worker caches successful BMP responses at Cloudflare for one hour. It
+rate-limits requests that reach the Worker to 20 per source IP per minute; this
+is an approximate limit applied separately at each Cloudflare location.
+
 ## Install the plugin
 
-1. Copy the `plugin` folder to the reader's SD card and enable the plugin.
+1. Install the `weather.crosspoint-plugin` payload from Plugin Hub, or
+   manually copy the files listed in
+   [`weather.crosspoint-plugin/manifest.json`](weather.crosspoint-plugin/manifest.json)
+   from the `weather.crosspoint-plugin/` folder into `/plugins/weather/` on the
+   reader's SD card. Copy the files inside that folder, not the enclosing folder.
 2. Open the Weather settings in the CrossPoint web interface.
 3. Search for a city, select the matching result, and save it. Choose the
    temperature unit at the bottom of the settings.
 4. Put the reader to sleep to download the updated `/sleep.bmp`.
 
 The initial configuration uses Berlin and Celsius. The plugin settings save
-the city coordinates and temperature unit in `plugin/config.json` on the SD
-card.
+the city coordinates and temperature unit in the plugin's `config.json` on the
+SD card.
 
 ### Pointing the plugin to another Worker
 
-The Worker endpoint is stored in the `worker_url` field in
-`plugin/config.json`. It defaults to this project's deployed endpoint:
+The Worker endpoint is stored in the `worker_url` field in the payload's
+`config.json`. It defaults to this project's deployed endpoint:
 
 ```json
 "worker_url": "https://crosspointer-weather-plugin.johnny353535.workers.dev/weather.bmp"
@@ -56,8 +64,8 @@ cd worker
 npm run deploy
 ```
 
-After deploying your own Worker, copy its `/weather.bmp` URL into
-`plugin/config.json` as described above.
+After deploying your own Worker, copy its `/weather.bmp` URL into the
+payload's `config.json` as described above.
 
 ## Attribution and bundled assets
 

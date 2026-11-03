@@ -439,11 +439,17 @@ async function createWeatherBmp(weather: WeatherData, locationName: string): Pro
 }
 
 export default {
-	async fetch(request: Request): Promise<Response> {
+	async fetch(request: Request, env: Env): Promise<Response> {
 		const url = new URL(request.url);
+		if (request.method !== 'GET') {
+			return new Response('Method not allowed', {
+				status: 405,
+				headers: { Allow: 'GET', 'Cache-Control': 'no-store' },
+			});
+		}
 
 		if (url.pathname !== '/weather.bmp') {
-			return new Response('Not found', { status: 404 });
+			return new Response('Not found', { status: 404, headers: { 'Cache-Control': 'no-store' } });
 		}
 
 		try {
@@ -453,17 +459,26 @@ export default {
 			const rawLongitude = url.searchParams.get('longitude');
 			const unresolvedConfig = rawLatitude === '{cfg.latitude}' && rawLongitude === '{cfg.longitude}';
 			if (hasLatitude !== hasLongitude && !unresolvedConfig) {
-				return new Response('Both latitude and longitude are required', { status: 400 });
+				return new Response('Both latitude and longitude are required', { status: 400, headers: { 'Cache-Control': 'no-store' } });
 			}
 			if (hasLatitude && hasLongitude && !unresolvedConfig && (!rawLatitude?.trim() || !rawLongitude?.trim())) {
-				return new Response('Latitude and longitude must not be empty', { status: 400 });
+				return new Response('Latitude and longitude must not be empty', { status: 400, headers: { 'Cache-Control': 'no-store' } });
 			}
 
 			const useDefaultLocation = (!hasLatitude && !hasLongitude) || unresolvedConfig;
 			const latitude = useDefaultLocation ? DEFAULT_LOCATION.latitude : Number(rawLatitude);
 			const longitude = useDefaultLocation ? DEFAULT_LOCATION.longitude : Number(rawLongitude);
 			if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90 || !Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
-				return new Response('Invalid latitude or longitude', { status: 400 });
+				return new Response('Invalid latitude or longitude', { status: 400, headers: { 'Cache-Control': 'no-store' } });
+			}
+
+			const clientIp = request.headers.get('CF-Connecting-IP') ?? 'unknown';
+			const { success } = await env.WEATHER_RATE_LIMITER.limit({ key: clientIp });
+			if (!success) {
+				return new Response('Rate limit exceeded', {
+					status: 429,
+					headers: { 'Cache-Control': 'no-store', 'Retry-After': '60' },
+				});
 			}
 
 			const requestedName = url.searchParams.get('location');
@@ -475,12 +490,13 @@ export default {
 			return new Response(bmp, {
 				headers: {
 					'Cache-Control': 'no-store',
+					'Cloudflare-CDN-Cache-Control': 'public, max-age=3600',
 					'Content-Type': 'image/bmp',
 				},
 			});
 		} catch (error) {
 			console.error('Weather image generation failed', error);
-			return new Response('Weather image generation failed', { status: 502 });
+			return new Response('Weather image generation failed', { status: 502, headers: { 'Cache-Control': 'no-store' } });
 		}
 	},
 } satisfies ExportedHandler<Env>;

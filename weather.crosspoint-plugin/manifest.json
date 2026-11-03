@@ -1,0 +1,14 @@
+{
+  "name": "weather",
+  "title": "Weather",
+  "mount": "settings",
+  "description": "Local weather on your sleep screen. Set your location in plugin settings.",
+  "version": "0.1.0",
+  "files": [
+    "manifest.json",
+    "device.json",
+    "plugin.js",
+    "README.md",
+    "config.json"
+  ]
+}
