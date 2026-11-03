@@ -5,7 +5,7 @@
 <g id="Date">
 <text id="text-date" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="40" y="60.7273">Wednesday, August 23</tspan></text>
 <g id="Frame 16">
-<text id="text-city" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="665.344" y="60.7273">Berlin</tspan></text>
+<text id="text-city" fill="black" style="white-space: pre" xml:space="preserve" font-family="Inter" font-size="24" font-weight="600" letter-spacing="0em"><tspan x="665.344" y="60.7273">Location</tspan></text>
 <g id="icon-location">
 <path id="Vector" d="M739 51L758 42L749 61L747 53L739 51Z" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
 </g>

@@ -22,15 +22,7 @@ import umbrella from 'lucide-static/icons/umbrella.svg';
 const WIDTH = 480;
 const HEIGHT = 800;
 const ROW_BYTES = WIDTH / 8;
-const BERLIN_TIMEZONE = 'Europe/Berlin';
-const WEATHER_URL = new URL('https://api.open-meteo.com/v1/forecast');
-WEATHER_URL.searchParams.set('latitude', '52.52');
-WEATHER_URL.searchParams.set('longitude', '13.405');
-WEATHER_URL.searchParams.set('current', 'temperature_2m,weather_code,is_day');
-WEATHER_URL.searchParams.set('hourly', 'temperature_2m,precipitation_probability,weather_code,is_day');
-WEATHER_URL.searchParams.set('daily', 'weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset');
-WEATHER_URL.searchParams.set('timezone', BERLIN_TIMEZONE);
-WEATHER_URL.searchParams.set('forecast_days', '4');
+const DEFAULT_LOCATION = { latitude: 52.52, longitude: 13.405, name: 'Berlin' };
 
 type RecordValue = Record<string, unknown>;
 
@@ -132,8 +124,16 @@ function parseWeatherResponse(value: unknown): WeatherData {
 	};
 }
 
-async function fetchWeather(): Promise<WeatherData> {
-	const response = await fetch(WEATHER_URL, {
+async function fetchWeather(latitude: number, longitude: number): Promise<WeatherData> {
+	const weatherUrl = new URL('https://api.open-meteo.com/v1/forecast');
+	weatherUrl.searchParams.set('latitude', String(latitude));
+	weatherUrl.searchParams.set('longitude', String(longitude));
+	weatherUrl.searchParams.set('current', 'temperature_2m,weather_code,is_day');
+	weatherUrl.searchParams.set('hourly', 'temperature_2m,precipitation_probability,weather_code,is_day');
+	weatherUrl.searchParams.set('daily', 'weather_code,temperature_2m_max,temperature_2m_min,sunrise,sunset');
+	weatherUrl.searchParams.set('timezone', 'auto');
+	weatherUrl.searchParams.set('forecast_days', '4');
+	const response = await fetch(weatherUrl, {
 		headers: { Accept: 'application/json' },
 	});
 	if (!response.ok) throw new Error(`Open-Meteo returned HTTP ${response.status}`);
@@ -196,7 +196,7 @@ function escapeRegExp(value: string): string {
 	return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function replaceTextById(svg: string, id: string, value: string, centerX?: number): string {
+function replaceTextById(svg: string, id: string, value: string, alignX?: number, anchor = 'middle'): string {
 	const openingTagPattern = new RegExp(`<text\\b[^>]*\\bid="${escapeRegExp(id)}"[^>]*>`);
 	const openingTag = openingTagPattern.exec(svg);
 	if (!openingTag || openingTag.index === undefined) {
@@ -207,10 +207,10 @@ function replaceTextById(svg: string, id: string, value: string, centerX?: numbe
 	if (contentEnd < 0) throw new Error(`weather.svg text element #${id} is not closed`);
 
 	let element = svg.slice(openingTag.index, contentEnd + '</text>'.length);
-	if (centerX !== undefined) {
+	if (alignX !== undefined) {
 		element = element
-			.replace('<text ', '<text text-anchor="middle" ')
-			.replace(/(<tspan\b[^>]*\bx=")[^"]*(")/, `$1${centerX}$2`);
+			.replace('<text ', `<text text-anchor="${anchor}" `)
+			.replace(/(<tspan\b[^>]*\bx=")[^"]*(")/, `$1${alignX}$2`);
 	}
 	element = replaceTextNode(element, value);
 	return `${svg.slice(0, openingTag.index)}${element}${svg.slice(contentEnd + '</text>'.length)}`;
@@ -319,7 +319,7 @@ function rotateLandscapeSvgToPortrait(svg: string): string {
 	return `${portraitTag}${defs}<g transform="matrix(0 1 -1 0 480 0)">${content}</g></svg>`;
 }
 
-function renderSvg(weather: WeatherData): string {
+function renderSvg(weather: WeatherData, locationName: string): string {
 	const currentHourIndex = findCurrentHourIndex(weather.current.time, weather.hourly.time);
 	const hourly = Array.from({ length: 5 }, (_, index) => {
 		const hourIndex = Math.min(currentHourIndex + index + 1, weather.hourly.time.length - 1);
@@ -338,9 +338,9 @@ function renderSvg(weather: WeatherData): string {
 		isDay: true,
 	}));
 
-	const textReplacements: Array<[string, string, number?]> = [
+	const textReplacements: Array<[string, string, number?, string?]> = [
 		['text-date', formatDate(weather.daily.time[0])],
-		['text-city', 'Berlin'],
+		['text-city', locationName, 730, 'end'],
 		['hour-now', formatHour(weather.current.time)],
 		['text-hour-now', formatTemperature(weather.current.temperature)],
 		['text-high-low', `H: ${formatTemperature(weather.daily.maximumTemperature[0])} L: ${formatTemperature(weather.daily.minimumTemperature[0])}`],
@@ -361,7 +361,7 @@ function renderSvg(weather: WeatherData): string {
 	}
 
 	const renderedSvg = textReplacements.reduce(
-		(svg, [id, value, centerX]) => replaceTextById(svg, id, value, centerX),
+		(svg, [id, value, alignX, anchor]) => replaceTextById(svg, id, value, alignX, anchor),
 		svgTemplate,
 	);
 	return rotateLandscapeSvgToPortrait(insertWeatherIcons(renderedSvg, weather, hourly, daily));
@@ -414,9 +414,9 @@ function createBmp(pixels: Uint8Array, width: number, height: number): ArrayBuff
 	return buffer;
 }
 
-async function createWeatherBmp(weather: WeatherData): Promise<ArrayBuffer> {
+async function createWeatherBmp(weather: WeatherData, locationName: string): Promise<ArrayBuffer> {
 	await initializeWasm();
-	const renderer = new Resvg(renderSvg(weather), {
+	const renderer = new Resvg(renderSvg(weather, locationName), {
 		background: '#ffffff',
 		fitTo: { mode: 'original' },
 		font: {
@@ -444,8 +444,29 @@ export default {
 		}
 
 		try {
-			const weather = await fetchWeather();
-			const bmp = await createWeatherBmp(weather);
+			const hasLatitude = url.searchParams.has('latitude');
+			const hasLongitude = url.searchParams.has('longitude');
+			const rawLatitude = url.searchParams.get('latitude');
+			const rawLongitude = url.searchParams.get('longitude');
+			const unresolvedConfig = rawLatitude === '{cfg.latitude}' && rawLongitude === '{cfg.longitude}';
+			if (hasLatitude !== hasLongitude && !unresolvedConfig) {
+				return new Response('Both latitude and longitude are required', { status: 400 });
+			}
+			if (hasLatitude && hasLongitude && !unresolvedConfig && (!rawLatitude?.trim() || !rawLongitude?.trim())) {
+				return new Response('Latitude and longitude must not be empty', { status: 400 });
+			}
+
+			const useDefaultLocation = (!hasLatitude && !hasLongitude) || unresolvedConfig;
+			const latitude = useDefaultLocation ? DEFAULT_LOCATION.latitude : Number(rawLatitude);
+			const longitude = useDefaultLocation ? DEFAULT_LOCATION.longitude : Number(rawLongitude);
+			if (!Number.isFinite(latitude) || latitude < -90 || latitude > 90 || !Number.isFinite(longitude) || longitude < -180 || longitude > 180) {
+				return new Response('Invalid latitude or longitude', { status: 400 });
+			}
+
+			const requestedName = url.searchParams.get('location');
+			const locationName = (!requestedName || requestedName === '{cfg.location}' ? DEFAULT_LOCATION.name : requestedName).trim().slice(0, 40) || DEFAULT_LOCATION.name;
+			const weather = await fetchWeather(latitude, longitude);
+			const bmp = await createWeatherBmp(weather, locationName);
 			return new Response(bmp, {
 				headers: {
 					'Cache-Control': 'no-store',
