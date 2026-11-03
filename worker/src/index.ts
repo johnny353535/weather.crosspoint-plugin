@@ -23,6 +23,9 @@ const WIDTH = 480;
 const HEIGHT = 800;
 const ROW_BYTES = WIDTH / 8;
 const DEFAULT_LOCATION = { latitude: 52.52, longitude: 13.405, name: 'Berlin' };
+const HOURLY_FORECAST_COUNT = 4;
+const HOURLY_ICON_POSITIONS: Array<[number, number]> = [[385.5, 156], [492, 156], [598.5, 156], [704, 156]];
+const HOURLY_COLUMN_CENTERS = [409.5, 516, 622.5, 728];
 
 type RecordValue = Record<string, unknown>;
 
@@ -190,9 +193,7 @@ function formatWeekday(value: string): string {
 	return new Intl.DateTimeFormat('en-US', {
 		timeZone: 'UTC',
 		weekday: 'short',
-	})
-		.format(new Date(`${value}T12:00:00Z`))
-		.toUpperCase();
+	}).format(new Date(`${value}T12:00:00Z`));
 }
 
 function findCurrentHourIndex(currentTime: string, hourlyTimes: string[]): number {
@@ -302,9 +303,8 @@ function insertWeatherIcons(
 	hourly: Array<{ weatherCode: number; isDay: boolean }>,
 	daily: Array<{ weatherCode: number; isDay: boolean }>,
 ): string {
-	const hourlyPositions = [[279.5, 156], [386, 156], [492.5, 156], [598, 156], [703, 156]];
 	const dailyPositions = [[620, 334], [620, 374], [620, 414]];
-	if (hourly.length !== hourlyPositions.length || daily.length !== dailyPositions.length) {
+	if (hourly.length !== HOURLY_ICON_POSITIONS.length || daily.length !== dailyPositions.length) {
 		throw new Error('weather icon positions do not match the data template');
 	}
 
@@ -313,11 +313,11 @@ function insertWeatherIcons(
 		['icon-hour-now', placeWeatherIcon(selectWeatherIcon(weather.current.weatherCode, weather.current.isDay), 40, 156, 48)],
 		...hourly.map((forecast, index) => [
 			`icon-hour-${index + 1}`,
-			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), hourlyPositions[index][0], hourlyPositions[index][1], 48),
+			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), HOURLY_ICON_POSITIONS[index][0], HOURLY_ICON_POSITIONS[index][1], 48),
 		] as [string, string]),
-		['icon-umbrella', placeWeatherIcon(umbrella, 78, 322, 24)],
-		['icon-sunrise', placeWeatherIcon(sunrise, 210, 322, 24)],
-		['icon-sunset', placeWeatherIcon(sunset, 342, 322, 24)],
+		['icon-umbrella', placeWeatherIcon(umbrella, 83, 322, 24)],
+		['icon-sunrise', placeWeatherIcon(sunrise, 225, 322, 24)],
+		['icon-sunset', placeWeatherIcon(sunset, 367, 322, 24)],
 		...daily.map((forecast, index) => [
 			`icon-forecast-${index + 1}`,
 			placeWeatherIcon(selectWeatherIcon(forecast.weatherCode, forecast.isDay), dailyPositions[index][0], dailyPositions[index][1], 24),
@@ -350,7 +350,7 @@ function rotateLandscapeSvgToPortrait(svg: string): string {
 
 function renderSvg(weather: WeatherData, locationName: string, timeFormat: TimeFormat, countryCode: string): string {
 	const currentHourIndex = findCurrentHourIndex(weather.current.time, weather.hourly.time);
-	const hourly = Array.from({ length: 5 }, (_, index) => {
+	const hourly = Array.from({ length: HOURLY_FORECAST_COUNT }, (_, index) => {
 		const hourIndex = Math.min(currentHourIndex + index + 1, weather.hourly.time.length - 1);
 		return {
 			time: formatHour(weather.hourly.time[hourIndex], timeFormat, countryCode, true),
@@ -373,16 +373,16 @@ function renderSvg(weather: WeatherData, locationName: string, timeFormat: TimeF
 		['hour-now', formatHour(weather.current.time, timeFormat, countryCode)],
 		['text-hour-now', formatTemperature(weather.current.temperature)],
 		['text-high-low', `H: ${formatTemperature(weather.daily.maximumTemperature[0])} L: ${formatTemperature(weather.daily.minimumTemperature[0])}`],
-		['chance-of-rain', `${Math.round(weather.hourly.precipitationProbability[currentHourIndex])}%`, 90],
-		['chance-of-rain-title', 'RAIN', 90],
-		['sunrise-time', formatHour(weather.daily.sunrise[0], timeFormat, countryCode), 222],
-		['sunrise-title', 'SUNRISE', 222],
-		['sunset-time', formatHour(weather.daily.sunset[0], timeFormat, countryCode), 354],
-		['sunset-title', 'SUNSET', 354],
+		['chance-of-rain', `${Math.round(weather.hourly.precipitationProbability[currentHourIndex])}%`, 95],
+		['chance-of-rain-title', 'RAIN', 95],
+		['sunrise-time', formatHour(weather.daily.sunrise[0], timeFormat, countryCode), 237],
+		['sunrise-title', 'SUNRISE', 237],
+		['sunset-time', formatHour(weather.daily.sunset[0], timeFormat, countryCode), 379],
+		['sunset-title', 'SUNSET', 379],
 	];
 	for (let index = 0; index < hourly.length; index++) {
-		textReplacements.push([`hour-${index + 1}`, hourly[index].time]);
-		textReplacements.push([`temperature-hour-${index + 1}`, hourly[index].temperature, [303.5, 410, 516.5, 622, 727][index]]);
+		textReplacements.push([`hour-${index + 1}`, hourly[index].time, HOURLY_COLUMN_CENTERS[index]]);
+		textReplacements.push([`temperature-hour-${index + 1}`, hourly[index].temperature, HOURLY_COLUMN_CENTERS[index]]);
 	}
 	for (let index = 0; index < daily.length; index++) {
 		textReplacements.push([`day-forecast-${index + 1}`, daily[index].day]);

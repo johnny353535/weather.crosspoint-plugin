@@ -144,7 +144,7 @@ CrossPoint.registerPlugin(async (container, api) => {
 				latitude: String(selectedPlace.latitude),
 				longitude: String(selectedPlace.longitude),
 				// Event URL templates do not escape query delimiters, so store the label URI-encoded.
-				location: encodeURIComponent(selectedPlace.name),
+				city: encodeURIComponent(selectedPlace.name),
 				country_code: selectedPlace.country_code || savedConfig.country_code || 'GB',
 			};
 			await api.writeFile(configPath, btoa(JSON.stringify(config)));
@@ -161,14 +161,14 @@ CrossPoint.registerPlugin(async (container, api) => {
 		const config = {
 			latitude: String(savedConfig.latitude ?? 52.52),
 			longitude: String(savedConfig.longitude ?? 13.405),
-			location: savedConfig.location || 'Berlin',
+			city: savedConfig.city || 'Berlin',
 			...savedConfig,
 			unit: temperatureUnit.value,
 		};
 		try {
 			await api.writeFile(configPath, btoa(JSON.stringify(config)));
 			savedConfig = config;
-			const locationName = decodeLocation(savedConfig.location || 'Berlin');
+			const locationName = decodeLocation(savedConfig.city || 'Berlin');
 			setStatus('Temperature unit saved for ' + locationName + '. It will appear after the next sleep-screen download.');
 		} catch (error) {
 			temperatureUnit.value = previousUnit;
@@ -195,8 +195,20 @@ CrossPoint.registerPlugin(async (container, api) => {
 	const saved = await loadConfig();
 	savedConfig = saved || {};
 	let configMigrationFailed = false;
+	let configChanged = false;
+	if (typeof savedConfig.city !== 'string' && typeof savedConfig.location === 'string') {
+		savedConfig.city = savedConfig.location;
+		configChanged = true;
+	}
+	if (Object.prototype.hasOwnProperty.call(savedConfig, 'location')) {
+		delete savedConfig.location;
+		configChanged = true;
+	}
 	if (typeof savedConfig.worker_url !== 'string' || !savedConfig.worker_url.trim()) {
 		savedConfig.worker_url = defaultWorkerUrl;
+		configChanged = true;
+	}
+	if (configChanged) {
 		try {
 			await api.writeFile(configPath, btoa(JSON.stringify(savedConfig)));
 		} catch {
@@ -208,9 +220,9 @@ CrossPoint.registerPlugin(async (container, api) => {
 	timeFormat.value = ['12h', '24h'].includes(savedConfig.time_format) ? savedConfig.time_format : 'auto';
 	timeFormat.disabled = false;
 	if (configMigrationFailed) {
-		setStatus('Could not initialize the Worker URL. Add worker_url to config.json on the SD card.');
+		setStatus('Could not update config.json on the SD card. Your saved city may not be used until the config is updated.');
 	} else if (saved && Number.isFinite(Number(saved.latitude)) && Number.isFinite(Number(saved.longitude))) {
-		setStatus('Current location: ' + decodeLocation(saved.location || 'Berlin') + '. Search below to change it.');
+		setStatus('Current location: ' + decodeLocation(savedConfig.city || 'Berlin') + '. Search below to change it.');
 	} else {
 		setStatus('Using Berlin until you choose another location.');
 	}

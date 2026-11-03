@@ -7,7 +7,7 @@
   "events": {
     "sleep.enter": {
       "download": {
-        "url": "{cfg.worker_url}?latitude={cfg.latitude}&longitude={cfg.longitude}&location={cfg.location}&unit={cfg.unit}&time_format={cfg.time_format}&country_code={cfg.country_code}",
+        "url": "{cfg.worker_url}?latitude={cfg.latitude}&longitude={cfg.longitude}&location={cfg.city}&unit={cfg.unit}&time_format={cfg.time_format}&country_code={cfg.country_code}",
         "dest": "/sleep.bmp"
       }
     }

@@ -1,66 +1,28 @@
-# Weather CrossPoint Plugin
+# Weather for CrossPoint
 
-Show current conditions and a forecast on the CrossPoint sleep screen. The
-Cloudflare Worker renders a 480×800, 1-bit BMP at `GET /weather.bmp`.
+Show current conditions and a four-day forecast on your CrossPoint sleep screen.
 
-## Features
+![Weather for CrossPoint running on an Xteink X4](./docs/images/cover.jpg)
 
-- Search for a city in the CrossPoint web interface and save its coordinates.
-- Show current, hourly, and daily weather in the reader's local forecast
-  timezone.
-- Choose Celsius or Fahrenheit in the plugin settings.
-- Use the location's usual clock format, or override it with 12-hour or
-  24-hour time in the plugin settings.
-- Download the generated image to `/sleep.bmp` when the reader enters sleep.
+## Installation
 
-City search uses Open-Meteo Geocoding. Postal-code search is not supported.
+Install the `weather.crosspoint-plugin` payload from Plugin Hub, or manually
+copy the files listed in
+[`weather.crosspoint-plugin/manifest.json`](weather.crosspoint-plugin/manifest.json)
+into `/plugins/weather/` on the reader's SD card. Copy the listed files, not
+the enclosing folder.
 
-The Worker caches successful BMP responses at Cloudflare for one hour. It
-rate-limits requests that reach the Worker to 20 per source IP per minute; this
-is an approximate limit applied separately at each Cloudflare location.
+In the CrossPoint web interface, open the Weather settings, search for a city,
+select it, and save. Choose the time format and temperature unit, then put the
+reader to sleep to download the updated `/sleep.bmp`. Automatic time format
+follows the selected city's country.
 
-## TODO
+## Worker (optional)
 
-- Add locale-aware date and number formatting; keep interface language English
-  for now.
-- Explore a vertical dashboard layout.
+The plugin uses a hosted Worker by default. It requests forecasts from
+Open-Meteo and generates the sleep-screen BMP.
 
-## Install the plugin
-
-1. Install the `weather.crosspoint-plugin` payload from Plugin Hub, or
-   manually copy the files listed in
-   [`weather.crosspoint-plugin/manifest.json`](weather.crosspoint-plugin/manifest.json)
-   from the `weather.crosspoint-plugin/` folder into `/plugins/weather/` on the
-   reader's SD card. Copy the files inside that folder, not the enclosing folder.
-2. Open the Weather settings in the CrossPoint web interface.
-3. Search for a city, select the matching result, and save it. Set the
-   temperature unit and time format; the automatic time format follows the
-   selected city's country.
-4. Put the reader to sleep to download the updated `/sleep.bmp`.
-
-The initial configuration uses Berlin and Celsius. The plugin settings save
-the city coordinates, temperature unit, and time format in the plugin's
-`config.json` on the SD card. The dashboard labels remain in English, and the
-date currently uses US English month-day ordering.
-
-### Pointing the plugin to another Worker
-
-The Worker endpoint is stored in the `worker_url` field in the payload's
-`config.json`. It defaults to this project's deployed endpoint:
-
-```json
-"worker_url": "https://crosspointer-weather-plugin.johnny353535.workers.dev/weather.bmp"
-```
-
-You can replace that value by hand with your own deployed Worker URL. Keep it
-as the base endpoint ending in `/weather.bmp`; the plugin appends the location
-and display-setting query parameters. The settings interface does not edit this
-field.
-Older installations are updated with the default URL when the settings page
-loads. If that automatic update fails, add `worker_url` to the existing
-`config.json` manually.
-
-## Run and deploy the Worker
+To run your own Worker, from the repository root:
 
 ```sh
 cd worker
@@ -68,39 +30,36 @@ npm ci
 npm run dev
 ```
 
-Deploy with:
+Deploy it to your Cloudflare account in a separate terminal:
 
 ```sh
 cd worker
+npx wrangler login
 npm run deploy
 ```
 
-After deploying your own Worker, copy its `/weather.bmp` URL into the
-payload's `config.json` as described above.
+After deployment, change `worker_url` in the plugin's `config.json` on the SD
+card to your Worker endpoint ending in `/weather.bmp`. Keep the full path; the
+plugin appends the location and display settings to it.
 
-## Attribution and bundled assets
+The reader sends the selected city's coordinates to the configured Worker,
+which forwards them to Open-Meteo. The Worker does not persist your location
+in a database or logs: query strings are redacted from logs, and invocation
+logs are not persisted. Cloudflare may temporarily cache the generated image
+for up to one hour. Open-Meteo says its troubleshooting logs may include
+coordinates and are deleted after 90 days; see its
+[privacy terms](https://open-meteo.com/en/terms).
 
-The settings page credits Open-Meteo and its weather-model providers and links
-to the [CC BY 4.0 license](https://creativecommons.org/licenses/by/4.0/).
-Weather data is adapted and rendered into the sleep-screen image. The bundled
-Inter font is distributed under the SIL Open Font License; see
-[`worker/src/Inter-LICENSE.txt`](worker/src/Inter-LICENSE.txt). Weather icons
-come from [`lucide-static`](https://github.com/lucide-icons/lucide) under the
-ISC license.
+## Attribution
 
-## Privacy and location data
+Weather data is provided by [Open-Meteo](https://open-meteo.com/) and its
+weather-model providers under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+The bundled Inter font is under the SIL Open Font License (see
+[`worker/src/Inter-LICENSE.txt`](worker/src/Inter-LICENSE.txt)); Lucide icons
+are under the ISC license.
 
-The reader sends the selected city and coordinates to this Worker to generate
-the weather image. The Worker configuration redacts query strings from its
-observability logs and disables persisted invocation logs, so location query
-parameters are not retained in the Worker's stored observability logs. The
-Worker forwards the coordinates to Open-Meteo to retrieve the forecast.
-Open-Meteo states that its API troubleshooting logs may include coordinates
-and are deleted after 90 days; see its [privacy terms](https://open-meteo.com/en/terms).
+## TODO
 
-## SVG layout
-
-The Worker fills the text nodes in `worker/src/weather.svg`. If a Figma export
-changes the text-node IDs or ordering, update `renderSvg` in
-`worker/src/index.ts`. Lucide icons are selected from Open-Meteo WMO weather
-codes and placed at the layout coordinates in the Worker.
+- Add locale-aware date and number formatting; keep interface language English
+  for now.
+- Explore a vertical dashboard layout.
