@@ -1,12 +1,12 @@
 # Weather for CrossPoint
 
-Show current conditions and a four-day forecast on your CrossPoint sleep screen.
+Show current weather conditions and a three-day forecast on your CrossPoint sleep screen.
 
 ![Weather for CrossPoint running on an Xteink X4](./cover.jpg)
 
 ## Installation
 
-Install the `weather.crosspoint-plugin` payload from Plugin Hub, or manually
+Install the plugin from Plugin Hub, or manually
 copy the files listed in
 [`weather.crosspoint-plugin/manifest.json`](weather.crosspoint-plugin/manifest.json)
 into `/plugins/weather/` on the reader's SD card. Copy the listed files, not
@@ -16,6 +16,12 @@ In the CrossPoint web interface, open the Weather settings, search for a city,
 select it, and save. Choose the time format and temperature unit, then put the
 reader to sleep to download the updated `/sleep.bmp`. Automatic time format
 follows the selected city's country.
+
+Make sure the reader is set up to show a sleep image.
+
+**Note:** The plugin replaces
+`/sleep.bmp` with its weather image whenever the sleep screen refreshes; back
+up your existing image if you may want to restore it later.
 
 ## Worker (optional)
 
