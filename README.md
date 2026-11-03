@@ -1,26 +1,51 @@
 # Weather CrossPoint Plugin
 
-Show the weather on your CrossPoint sleep screen.
+Show current conditions and a forecast on the CrossPoint sleep screen. The
+Cloudflare Worker renders a 480×800, 1-bit BMP at `GET /weather.bmp`.
 
-This Worker generates the CrossPoint sleep image at `GET /weather.bmp`. The
-location is selected in the CrossPoint web UI under Settings → Weather.
+## Features
 
-- Searches cities with Open-Meteo Geocoding and saves the selected coordinates
-  in `plugin/config.json` on the reader's SD card.
-- The reader passes its saved coordinates and city name to the Worker when the
-  sleep image downloads. Requests without coordinates continue to use Berlin.
-- Fetches current, hourly, and daily weather for the selected location from
-  Open-Meteo, using its local timezone.
-- Fills the text nodes in `worker/src/weather.svg`.
-- Selects Lucide weather icons from Open-Meteo WMO weather codes.
-- Renders the SVG with the bundled Inter font.
-- Returns a 480×800, 1-bit BMP suitable for `/sleep.bmp`.
+- Search for a city in the CrossPoint web interface and save its coordinates.
+- Show current, hourly, and daily weather in the reader's local forecast
+  timezone.
+- Choose Celsius or Fahrenheit in the plugin settings.
+- Download the generated image to `/sleep.bmp` when the reader enters sleep.
 
-Run locally with:
+City search uses Open-Meteo Geocoding. Postal-code search is not supported.
+
+## Install the plugin
+
+1. Copy the `plugin` folder to the reader's SD card and enable the plugin.
+2. Open the Weather settings in the CrossPoint web interface.
+3. Search for a city, select the matching result, and save it. Choose the
+   temperature unit at the bottom of the settings.
+4. Put the reader to sleep to download the updated `/sleep.bmp`.
+
+The initial configuration uses Berlin and Celsius. The plugin settings save
+the city coordinates and temperature unit in `plugin/config.json` on the SD
+card.
+
+### Pointing the plugin to another Worker
+
+The Worker endpoint is stored in the `worker_url` field in
+`plugin/config.json`. It defaults to this project's deployed endpoint:
+
+```json
+"worker_url": "https://crosspointer-weather-plugin.johnny353535.workers.dev/weather.bmp"
+```
+
+You can replace that value by hand with your own deployed Worker URL. Keep it
+as the base endpoint ending in `/weather.bmp`; the plugin appends the location
+and unit query parameters. The settings interface does not edit this field.
+Older installations are updated with the default URL when the settings page
+loads. If that automatic update fails, add `worker_url` to the existing
+`config.json` manually.
+
+## Run and deploy the Worker
 
 ```sh
 cd worker
-npm install
+npm ci
 npm run dev
 ```
 
@@ -31,17 +56,32 @@ cd worker
 npm run deploy
 ```
 
-The SVG text nodes are replaced by their order in the exported file. If the
-Figma export changes its text-node order, update `renderSvg` in
-`worker/src/index.ts`. Weather icons are imported from `lucide-static` and
-placed by the Worker at the existing layout coordinates.
+After deploying your own Worker, copy its `/weather.bmp` URL into
+`plugin/config.json` as described above.
 
-The CrossPoint plugin includes `manifest.json` and `plugin.js` for the web
-settings card, plus `device.json` for the sleep event. Install the `plugin`
-folder on the reader's SD card, enable plugins, then choose a city in the
-reader's web UI. The first-run config defaults to Berlin.
+## Attribution and bundled assets
 
-Weather data is provided by [Open-Meteo](https://open-meteo.com/). The bundled
-Inter font is distributed under the SIL Open Font License in
-`worker/src/Inter-LICENSE.txt`. Lucide icons are provided by
-[`lucide-static`](https://github.com/lucide-icons/lucide) under the ISC license.
+The settings page credits Open-Meteo and its weather-model providers and links
+to the [CC BY 4.0 license](https://creativecommons.org/licenses/by/4.0/).
+Weather data is adapted and rendered into the sleep-screen image. The bundled
+Inter font is distributed under the SIL Open Font License; see
+[`worker/src/Inter-LICENSE.txt`](worker/src/Inter-LICENSE.txt). Weather icons
+come from [`lucide-static`](https://github.com/lucide-icons/lucide) under the
+ISC license.
+
+## Privacy and location data
+
+The reader sends the selected city and coordinates to this Worker to generate
+the weather image. The Worker configuration redacts query strings from its
+observability logs and disables persisted invocation logs, so location query
+parameters are not retained in the Worker's stored observability logs. The
+Worker forwards the coordinates to Open-Meteo to retrieve the forecast.
+Open-Meteo states that its API troubleshooting logs may include coordinates
+and are deleted after 90 days; see its [privacy terms](https://open-meteo.com/en/terms).
+
+## SVG layout
+
+The Worker fills the text nodes in `worker/src/weather.svg`. If a Figma export
+changes the text-node IDs or ordering, update `renderSvg` in
+`worker/src/index.ts`. Lucide icons are selected from Open-Meteo WMO weather
+codes and placed at the layout coordinates in the Worker.

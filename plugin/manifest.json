@@ -1,5 +1,7 @@
 {
+  "name": "weather",
   "title": "Weather",
   "mount": "settings",
-  "description": "Choose the location shown on the sleep screen."
+  "description": "A simple weather plugin for displaying current weather information when your reader is sleeping. Set up your location in the plugin settings.",
+  "version": "0.1.0"
 }

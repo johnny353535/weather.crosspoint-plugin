@@ -1,5 +1,6 @@
 CrossPoint.registerPlugin(async (container, api) => {
 	const configPath = api.dir + '/config.json';
+	const defaultWorkerUrl = 'https://crosspointer-weather-plugin.johnny353535.workers.dev/weather.bmp';
 	container.innerHTML = `
 		<h2>Weather location</h2>
 		<p id="weather-location-status">Loading saved location…</p>
@@ -25,6 +26,7 @@ CrossPoint.registerPlugin(async (container, api) => {
 				</select>
 			</span>
 		</div>
+		<p>Weather data from <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">Open-Meteo</a> and its weather-model providers. Adapted for this sleep screen. Licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a>.</p>
 	`;
 
 	const status = container.querySelector('#weather-location-status');
@@ -164,9 +166,20 @@ CrossPoint.registerPlugin(async (container, api) => {
 
 	const saved = await loadConfig();
 	savedConfig = saved || {};
+	let configMigrationFailed = false;
+	if (typeof savedConfig.worker_url !== 'string' || !savedConfig.worker_url.trim()) {
+		savedConfig.worker_url = defaultWorkerUrl;
+		try {
+			await api.writeFile(configPath, btoa(JSON.stringify(savedConfig)));
+		} catch {
+			configMigrationFailed = true;
+		}
+	}
 	temperatureUnit.value = savedConfig.unit === 'fahrenheit' ? 'fahrenheit' : 'celsius';
 	temperatureUnit.disabled = false;
-	if (saved && Number.isFinite(Number(saved.latitude)) && Number.isFinite(Number(saved.longitude))) {
+	if (configMigrationFailed) {
+		setStatus('Could not initialize the Worker URL. Add worker_url to config.json on the SD card.');
+	} else if (saved && Number.isFinite(Number(saved.latitude)) && Number.isFinite(Number(saved.longitude))) {
 		setStatus('Current location: ' + decodeLocation(saved.location || 'Berlin') + '. Search below to change it.');
 	} else {
 		setStatus('Using Berlin until you choose another location.');

@@ -1,12 +1,13 @@
 {
   "title": "Weather",
+  "description": "A simple weather plugin for displaying current weather information when your reader is sleeping. Set up your location in the plugin settings.",
   "config": {
     "file": "config.json"
   },
   "events": {
     "sleep.enter": {
       "download": {
-        "url": "https://crosspointer-weather-plugin.johnny353535.workers.dev/weather.bmp?latitude={cfg.latitude}&longitude={cfg.longitude}&location={cfg.location}&unit={cfg.unit}",
+        "url": "{cfg.worker_url}?latitude={cfg.latitude}&longitude={cfg.longitude}&location={cfg.location}&unit={cfg.unit}",
         "dest": "/sleep.bmp"
       }
     }
