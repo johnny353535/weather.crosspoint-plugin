@@ -3,5 +3,7 @@
   "latitude": "52.52",
   "longitude": "13.405",
   "location": "Berlin",
-  "unit": "celsius"
+  "unit": "celsius",
+  "time_format": "auto",
+  "country_code": "DE"
 }

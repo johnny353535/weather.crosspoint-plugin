@@ -9,6 +9,8 @@ Cloudflare Worker renders a 480×800, 1-bit BMP at `GET /weather.bmp`.
 - Show current, hourly, and daily weather in the reader's local forecast
   timezone.
 - Choose Celsius or Fahrenheit in the plugin settings.
+- Use the location's usual clock format, or override it with 12-hour or
+  24-hour time in the plugin settings.
 - Download the generated image to `/sleep.bmp` when the reader enters sleep.
 
 City search uses Open-Meteo Geocoding. Postal-code search is not supported.
@@ -16,6 +18,12 @@ City search uses Open-Meteo Geocoding. Postal-code search is not supported.
 The Worker caches successful BMP responses at Cloudflare for one hour. It
 rate-limits requests that reach the Worker to 20 per source IP per minute; this
 is an approximate limit applied separately at each Cloudflare location.
+
+## TODO
+
+- Add locale-aware date and number formatting; keep interface language English
+  for now.
+- Explore a vertical dashboard layout.
 
 ## Install the plugin
 
@@ -25,13 +33,15 @@ is an approximate limit applied separately at each Cloudflare location.
    from the `weather.crosspoint-plugin/` folder into `/plugins/weather/` on the
    reader's SD card. Copy the files inside that folder, not the enclosing folder.
 2. Open the Weather settings in the CrossPoint web interface.
-3. Search for a city, select the matching result, and save it. Choose the
-   temperature unit at the bottom of the settings.
+3. Search for a city, select the matching result, and save it. Set the
+   temperature unit and time format; the automatic time format follows the
+   selected city's country.
 4. Put the reader to sleep to download the updated `/sleep.bmp`.
 
 The initial configuration uses Berlin and Celsius. The plugin settings save
-the city coordinates and temperature unit in the plugin's `config.json` on the
-SD card.
+the city coordinates, temperature unit, and time format in the plugin's
+`config.json` on the SD card. The dashboard labels remain in English, and the
+date currently uses US English month-day ordering.
 
 ### Pointing the plugin to another Worker
 
@@ -44,7 +54,8 @@ The Worker endpoint is stored in the `worker_url` field in the payload's
 
 You can replace that value by hand with your own deployed Worker URL. Keep it
 as the base endpoint ending in `/weather.bmp`; the plugin appends the location
-and unit query parameters. The settings interface does not edit this field.
+and display-setting query parameters. The settings interface does not edit this
+field.
 Older installations are updated with the default URL when the settings page
 loads. If that automatic update fails, add `worker_url` to the existing
 `config.json` manually.

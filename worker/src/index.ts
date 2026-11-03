@@ -147,8 +147,34 @@ function formatTemperature(value: number): string {
 	return `${Math.round(value)}°`;
 }
 
-function formatHour(value: string): string {
-	return value.slice(11, 16);
+type TimeFormat = 'auto' | '12h' | '24h';
+
+function formatHour(value: string, timeFormat: TimeFormat, countryCode: string, compact12Hour = false): string {
+	const match = /T(\d{2}):(\d{2})/.exec(value);
+	if (!match) return value.slice(11, 16);
+	const hour = Number(match[1]);
+	const minute = Number(match[2]);
+	if (hour > 23 || minute > 59) return value.slice(11, 16);
+	const requestedLocale = `en-${countryCode}`;
+	const locale = Intl.DateTimeFormat.supportedLocalesOf([requestedLocale]).length ? requestedLocale : 'en-GB';
+	const options: Intl.DateTimeFormatOptions = {
+		hour: 'numeric',
+		minute: '2-digit',
+		timeZone: 'UTC',
+	};
+	if (timeFormat === '12h') options.hour12 = true;
+	if (timeFormat === '24h') options.hour12 = false;
+	const date = new Date(Date.UTC(2020, 0, 1, hour, minute));
+	const formatter = new Intl.DateTimeFormat(locale, options);
+	const uses12HourClock = timeFormat === '12h' || (timeFormat === 'auto' && formatter.resolvedOptions().hourCycle?.startsWith('h1'));
+	if (!compact12Hour || !uses12HourClock) return formatter.format(date);
+
+	const compactTime = new Intl.DateTimeFormat(locale, {
+		hour: 'numeric',
+		hour12: true,
+		timeZone: 'UTC',
+	}).format(date);
+	return compactTime.replace(/\s+([ap]m)$/i, (_match, period: string) => ` ${period.toLowerCase()}`);
 }
 
 function formatDate(value: string): string {
@@ -322,12 +348,12 @@ function rotateLandscapeSvgToPortrait(svg: string): string {
 	return `${portraitTag}${defs}<g transform="matrix(0 1 -1 0 480 0)">${content}</g></svg>`;
 }
 
-function renderSvg(weather: WeatherData, locationName: string): string {
+function renderSvg(weather: WeatherData, locationName: string, timeFormat: TimeFormat, countryCode: string): string {
 	const currentHourIndex = findCurrentHourIndex(weather.current.time, weather.hourly.time);
 	const hourly = Array.from({ length: 5 }, (_, index) => {
 		const hourIndex = Math.min(currentHourIndex + index + 1, weather.hourly.time.length - 1);
 		return {
-			time: formatHour(weather.hourly.time[hourIndex]),
+			time: formatHour(weather.hourly.time[hourIndex], timeFormat, countryCode, true),
 			temperature: formatTemperature(weather.hourly.temperature[hourIndex]),
 			weatherCode: weather.hourly.weatherCode[hourIndex],
 			isDay: weather.hourly.isDay[hourIndex],
@@ -344,14 +370,14 @@ function renderSvg(weather: WeatherData, locationName: string): string {
 	const textReplacements: Array<[string, string, number?, string?]> = [
 		['text-date', formatDate(weather.daily.time[0])],
 		['text-city', locationName, 730, 'end'],
-		['hour-now', formatHour(weather.current.time)],
+		['hour-now', formatHour(weather.current.time, timeFormat, countryCode)],
 		['text-hour-now', formatTemperature(weather.current.temperature)],
 		['text-high-low', `H: ${formatTemperature(weather.daily.maximumTemperature[0])} L: ${formatTemperature(weather.daily.minimumTemperature[0])}`],
 		['chance-of-rain', `${Math.round(weather.hourly.precipitationProbability[currentHourIndex])}%`, 90],
 		['chance-of-rain-title', 'RAIN', 90],
-		['sunrise-time', formatHour(weather.daily.sunrise[0]), 222],
+		['sunrise-time', formatHour(weather.daily.sunrise[0], timeFormat, countryCode), 222],
 		['sunrise-title', 'SUNRISE', 222],
-		['sunset-time', formatHour(weather.daily.sunset[0]), 354],
+		['sunset-time', formatHour(weather.daily.sunset[0], timeFormat, countryCode), 354],
 		['sunset-title', 'SUNSET', 354],
 	];
 	for (let index = 0; index < hourly.length; index++) {
@@ -417,9 +443,9 @@ function createBmp(pixels: Uint8Array, width: number, height: number): ArrayBuff
 	return buffer;
 }
 
-async function createWeatherBmp(weather: WeatherData, locationName: string): Promise<ArrayBuffer> {
+async function createWeatherBmp(weather: WeatherData, locationName: string, timeFormat: TimeFormat, countryCode: string): Promise<ArrayBuffer> {
 	await initializeWasm();
-	const renderer = new Resvg(renderSvg(weather, locationName), {
+	const renderer = new Resvg(renderSvg(weather, locationName, timeFormat, countryCode), {
 		background: '#ffffff',
 		fitTo: { mode: 'original' },
 		font: {
@@ -485,8 +511,12 @@ export default {
 			const locationName = (!requestedName || requestedName === '{cfg.location}' ? DEFAULT_LOCATION.name : requestedName).trim().slice(0, 40) || DEFAULT_LOCATION.name;
 			const requestedUnit = url.searchParams.get('unit')?.trim().toLowerCase();
 			const temperatureUnit: TemperatureUnit = requestedUnit === 'fahrenheit' ? 'fahrenheit' : 'celsius';
+			const requestedTimeFormat = url.searchParams.get('time_format')?.trim().toLowerCase();
+			const timeFormat: TimeFormat = requestedTimeFormat === '12h' || requestedTimeFormat === '24h' ? requestedTimeFormat : 'auto';
+			const requestedCountryCode = url.searchParams.get('country_code')?.trim().toUpperCase() ?? 'GB';
+			const countryCode = /^[A-Z]{2}$/.test(requestedCountryCode) ? requestedCountryCode : 'GB';
 			const weather = await fetchWeather(latitude, longitude, temperatureUnit);
-			const bmp = await createWeatherBmp(weather, locationName);
+			const bmp = await createWeatherBmp(weather, locationName, timeFormat, countryCode);
 			return new Response(bmp, {
 				headers: {
 					'Cache-Control': 'no-store',

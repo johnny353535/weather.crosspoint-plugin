@@ -18,6 +18,16 @@ CrossPoint.registerPlugin(async (container, api) => {
 		</div>
 		<p>Choose a result, then save it. The reader uses the saved location the next time it downloads the sleep screen.</p>
 		<div class="setting-row">
+			<span class="setting-name">Time format</span>
+			<span class="setting-control">
+				<select id="weather-time-format" disabled>
+					<option value="auto">Automatic (based on location)</option>
+					<option value="12h">12-hour</option>
+					<option value="24h">24-hour</option>
+				</select>
+			</span>
+		</div>
+		<div class="setting-row">
 			<span class="setting-name">Temperature</span>
 			<span class="setting-control">
 				<select id="weather-temperature-unit" disabled>
@@ -35,6 +45,7 @@ CrossPoint.registerPlugin(async (container, api) => {
 	const searchButton = container.querySelector('#weather-location-search');
 	const saveButton = container.querySelector('#weather-location-save');
 	const temperatureUnit = container.querySelector('#weather-temperature-unit');
+	const timeFormat = container.querySelector('#weather-time-format');
 	let selectedPlace = null;
 	let savedConfig = {};
 
@@ -134,6 +145,7 @@ CrossPoint.registerPlugin(async (container, api) => {
 				longitude: String(selectedPlace.longitude),
 				// Event URL templates do not escape query delimiters, so store the label URI-encoded.
 				location: encodeURIComponent(selectedPlace.name),
+				country_code: selectedPlace.country_code || savedConfig.country_code || 'GB',
 			};
 			await api.writeFile(configPath, btoa(JSON.stringify(config)));
 			savedConfig = config;
@@ -164,6 +176,22 @@ CrossPoint.registerPlugin(async (container, api) => {
 		}
 	});
 
+	timeFormat.addEventListener('change', async () => {
+		const previousFormat = ['auto', '12h', '24h'].includes(savedConfig.time_format) ? savedConfig.time_format : 'auto';
+		const config = {
+			...savedConfig,
+			time_format: timeFormat.value,
+		};
+		try {
+			await api.writeFile(configPath, btoa(JSON.stringify(config)));
+			savedConfig = config;
+			setStatus('Time format saved. It will appear after the next sleep-screen download.');
+		} catch (error) {
+			timeFormat.value = previousFormat;
+			setStatus('Could not save the time format: ' + error.message);
+		}
+	});
+
 	const saved = await loadConfig();
 	savedConfig = saved || {};
 	let configMigrationFailed = false;
@@ -177,6 +205,8 @@ CrossPoint.registerPlugin(async (container, api) => {
 	}
 	temperatureUnit.value = savedConfig.unit === 'fahrenheit' ? 'fahrenheit' : 'celsius';
 	temperatureUnit.disabled = false;
+	timeFormat.value = ['12h', '24h'].includes(savedConfig.time_format) ? savedConfig.time_format : 'auto';
+	timeFormat.disabled = false;
 	if (configMigrationFailed) {
 		setStatus('Could not initialize the Worker URL. Add worker_url to config.json on the SD card.');
 	} else if (saved && Number.isFinite(Number(saved.latitude)) && Number.isFinite(Number(saved.longitude))) {
